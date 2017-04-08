@@ -5,6 +5,8 @@
   "keywords": [
     "medium-editor",
     "ember-medium-editor",
+    "ember-wysiwyg",
+    "ember-rich-text",
     "ember-addon"
   ],
   "license": "MIT",
@@ -20,7 +22,10 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.0.0-beta.3"
+    "broccoli-funnel": "^1.1.0",
+    "broccoli-merge-trees": "^2.0.0",
+    "ember-cli-babel": "^6.0.0-beta.3",
+    "medium-editor": "^5.23.0"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",

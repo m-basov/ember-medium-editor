@@ -3823,6 +3823,10 @@ media-typer@0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
 
+medium-editor@^5.23.0:
+  version "5.23.0"
+  resolved "https://registry.yarnpkg.com/medium-editor/-/medium-editor-5.23.0.tgz#7d16c15cdf152b95ced2a583bf07203e8539a3c6"
+
 memory-streams@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/memory-streams/-/memory-streams-0.1.2.tgz#273ff777ab60fec599b116355255282cca2c50c2"
