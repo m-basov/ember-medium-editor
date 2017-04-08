@@ -1,17 +1,19 @@
 {
   "name": "ember-medium-editor",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.1.0",
+  "description": "medium-editor for Ember Apps",
   "keywords": [
+    "medium-editor",
+    "ember-medium-editor",
     "ember-addon"
   ],
   "license": "MIT",
-  "author": "",
+  "author": "Mykola Basov <kolybasov@gmail.com>",
   "directories": {
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/kolybasov/ember-medium-editor",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
@@ -46,5 +48,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
-  }
+  },
+  "main": "index.js"
 }
