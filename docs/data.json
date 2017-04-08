@@ -1,0 +1,119 @@
+{
+    "project": {
+        "name": "ember-medium-editor",
+        "description": "medium-editor for Ember Apps",
+        "version": "0.1.0.203a98f6",
+        "url": "https://github.com/kolybasov/ember-medium-editor",
+        "indexModule": "Usage"
+    },
+    "files": {
+        "addon/components/medium-editor.js": {
+            "name": "addon/components/medium-editor.js",
+            "modules": {
+                "ember-medium-editor": 1
+            },
+            "classes": {
+                "MediumEditor": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "addon/index.js": {
+            "name": "addon/index.js",
+            "modules": {
+                "Usage": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "ember-medium-editor": {
+            "name": "ember-medium-editor",
+            "submodules": {},
+            "elements": {},
+            "classes": {
+                "MediumEditor": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "addon/components/medium-editor.js",
+            "line": 28,
+            "description": "Ember wrapper for `medium-editor` library.\n\nUsage:\n\n```handlebars\n{{medium-editor\n   model.text\n   options=(hash)\n   onChange=(action (mut model.text))}}\n```",
+            "exports": ""
+        },
+        "Usage": {
+            "name": "Usage",
+            "submodules": {},
+            "elements": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "addon/index.js",
+            "line": 1,
+            "description": "## Installation\n\n```shell\nember install ember-medium-editor\n```\n\n## Usage\n\n```handlebars\n{{medium-editor\n   model.text\n   options=(hash)\n   onChange=(action (mut model.text))}}\n```"
+        }
+    },
+    "classes": {
+        "MediumEditor": {
+            "name": "MediumEditor",
+            "shortname": "MediumEditor",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "ember-medium-editor",
+            "namespace": "",
+            "file": "addon/components/medium-editor.js",
+            "line": 28,
+            "description": "Ember wrapper for `medium-editor` library.\n\nUsage:\n\n```handlebars\n{{medium-editor\n   model.text\n   options=(hash)\n   onChange=(action (mut model.text))}}\n```",
+            "exports": ""
+        }
+    },
+    "elements": {},
+    "classitems": [
+        {
+            "file": "addon/components/medium-editor.js",
+            "line": 45,
+            "description": "Value to set into the editor. It is readonly.",
+            "itemtype": "property",
+            "name": "value",
+            "default": "null",
+            "type": "String",
+            "class": "MediumEditor",
+            "module": "ember-medium-editor"
+        },
+        {
+            "file": "addon/components/medium-editor.js",
+            "line": 54,
+            "description": "Options to pass to MediumEditor instance. List of all available options is\naccessible by link: https://github.com/yabwe/medium-editor/blob/master/OPTIONS.md",
+            "itemtype": "property",
+            "name": "options",
+            "default": "{}",
+            "type": "{Object}",
+            "class": "MediumEditor",
+            "module": "ember-medium-editor"
+        },
+        {
+            "file": "addon/components/medium-editor.js",
+            "line": 64,
+            "description": "`onChange` is alias for `editableInput` event. Lists of all events:\nhttps://github.com/yabwe/medium-editor/blob/master/CUSTOM-EVENTS.md",
+            "itemtype": "event",
+            "name": "onChange",
+            "default": "null",
+            "type": "{function}",
+            "class": "MediumEditor",
+            "module": "ember-medium-editor"
+        }
+    ],
+    "warnings": [
+        {
+            "message": "unknown tag: exports",
+            "line": " addon/components/medium-editor.js:28"
+        }
+    ]
+}

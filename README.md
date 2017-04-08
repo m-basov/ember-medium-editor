@@ -1,27 +1,28 @@
-# ember-medium-editor
+# ember-medium-editor [![Build Status](https://travis-ci.org/kolybasov/ember-medium-editor.svg?branch=master)](https://travis-ci.org/kolybasov/ember-medium-editor)
 
-This README outlines the details of collaborating on this Ember addon.
+[medium-editor](https://github.com/yabwe/medium-editor) library for Ember Apps.
 
 ## Installation
 
-* `git clone <repository-url>` this repository
-* `cd ember-medium-editor`
-* `npm install`
-* `bower install`
+With `ember`:
 
-## Running
+* `ember install ember-medium-editor`
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+With `npm`:
 
-## Running Tests
+* `npm install --save-dev ember-medium-editor`
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+With `yarn`:
 
-## Building
+* `yarn add --dev ember-medium-editor`
 
-* `ember build`
+## Usage
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+```handlebars
+{medium-editor
+  model.text
+  options=(hash)
+  onChange=(action (mut model.text))}}
+```
+
+## [API Docs](https://ember-medium-editor.mbasov.me/index.html)

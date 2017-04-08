@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>addon/components/medium-editor.js - ember-medium-editor</title>
+    <meta name="description" content="medium-editor for Ember Apps">
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="stylesheet" href="../assets/css/custom.css">
+    <link rel="stylesheet" href="../assets/vendor/bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" href="../assets/vendor/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../assets/css/theme.css">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700' rel='stylesheet' type='text/css'>
+    
+</head>
+<body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a href="../" class="navbar-brand">
+            <img src="../assets/img/ember-logo.png" alt="">
+            <span>medium-editor</span>
+          </a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="nav">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="https://github.com/kolybasov/ember-medium-editor" class="fa fa-github github"></a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="main-wrapper" class="row">
+        <div id="content-wrapper">
+            <ol class="panel-group" id="sidebar" role="tablist" aria-multiselectable="true">
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-search-heading">
+                        <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" href="#sidebar-search" aria-expanded="true" aria-controls="collapseOne">
+                        Search
+                      </a>
+                    </h4>
+                    </div>
+                    <div id="sidebar-search" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-search-heading">
+                        <div class="panel-body">
+                            <div id="api-tabview-filter">
+                                <input type="search" id="api-filter" placeholder="Search...">
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                    <li class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="sidebar-version-heading">
+                            <h4 class="panel-title">
+                                <a role="button" href="https://github.com/kolybasov/ember-medium-editor/commits/203a98f6" target="_blank">
+                                  Tag: 0.1.0.203a98f6
+                                </a>
+                            </h4>
+                        </div>
+                    </li>
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-modules-heading">
+                        <h4 class="panel-title">
+                    <a role="button" data-toggle="collapse" href="#sidebar-modules" aria-expanded="true" aria-controls="collapseOne">
+                      Modules
+                    </a>
+                  </h4>
+                    </div>
+                    <div id="sidebar-modules" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-modules-heading">
+                        <div class="panel-body">
+                                <ol>
+                                        <li>
+                                            <a href="../modules/ember-medium-editor.html">ember-medium-editor</a>
+                                        </li>
+                                        <li>
+                                            <a href="../modules/Usage.html">Usage</a>
+                                        </li>
+                                </ol>
+                        </div>
+                    </div>
+                </li>
+            
+                <li class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="sidebar-classes-heading">
+                        <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" href="#sidebar-classes" aria-expanded="true" aria-controls="collapseOne">
+                        Classes
+                      </a>
+                    </h4>
+                    </div>
+                    <div id="sidebar-classes" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="sidebar-classes-heading">
+                        <div class="panel-body">
+                            <ol>
+                                    <li>
+                                        <a href="../classes/MediumEditor.html">MediumEditor</a>
+                                    </li>
+                            </ol>
+                        </div>
+                    </div>
+                </li>
+            </ol>
+            <div class="content-container">
+                <div class="apidocs">
+                    <div id="docs-main">
+                        <div class="content">
+<div class="page-header">
+    <h1><i class="fa fa-file-code-o" aria-hidden="true"></i>  File</h1>
+</div>
+
+<div class="file">
+    <pre class="prettyprint linenums">
+import Ember from &#x27;ember&#x27;;
+import MediumEditor from &#x27;medium-editor&#x27;;
+
+const {
+  Component,
+  set,
+  get,
+  isPresent
+} = Ember;
+
+// Options: https://github.com/yabwe/medium-editor/blob/master/OPTIONS.md
+const defaultOptions = {};
+
+// Events: https://github.com/yabwe/medium-editor/blob/master/CUSTOM-EVENTS.md
+const mediumEditorEvents = [
+  // custom events
+  &#x27;addElement&#x27;, &#x27;blur&#x27;, &#x27;editableInput&#x27;, &#x27;externalInteraction&#x27;,
+  &#x27;focus&#x27;, &#x27;removeElement&#x27;,
+  // toolbar custom events
+  &#x27;hideToolbar&#x27;, &#x27;positionToolbar&#x27;, &#x27;positionedToolbar&#x27;, &#x27;showToolbar&#x27;,
+  // proxied custom events
+  &#x27;editableClick&#x27;, &#x27;editableBlur&#x27;, &#x27;editableKeypress&#x27;, &#x27;editableKeyup&#x27;,
+  &#x27;editableKeydown&#x27;, &#x27;editableKeydownEnter&#x27;, &#x27;editableKeydownTab&#x27;,
+  &#x27;editableKeydownDelete&#x27;, &#x27;editableKeydownSpace&#x27;, &#x27;editableMouseover&#x27;,
+  &#x27;editableDrag&#x27;, &#x27;editableDrop&#x27;, &#x27;editablePaste&#x27;
+];
+
+/**
+ * Ember wrapper for &#x60;medium-editor&#x60; library.
+ *
+ * Usage:
+ *
+ * &#x60;&#x60;&#x60;handlebars
+ * {{medium-editor
+ *    model.text
+ *    options=(hash)
+ *    onChange=(action (mut model.text))}}
+ * &#x60;&#x60;&#x60;
+ *
+ * @exports
+ * @module ember-medium-editor
+ * @class MediumEditor
+ */
+const MediumEditorComponent = Component.extend({
+  /**
+   * Value to set into the editor. It is readonly.
+   *
+   * @property value
+   * @default null
+   * @type String
+   */
+  value: null,
+
+  /**
+   * Options to pass to MediumEditor instance. List of all available options is
+   * accessible by link: https://github.com/yabwe/medium-editor/blob/master/OPTIONS.md
+   *
+   * @property options
+   * @default {}
+   * @type {Object}
+   */
+  options: null,
+
+  /**
+   * &#x60;onChange&#x60; is alias for &#x60;editableInput&#x60; event. Lists of all events:
+   * https://github.com/yabwe/medium-editor/blob/master/CUSTOM-EVENTS.md
+   *
+   * @event onChange
+   * @default null
+   * @type {function}
+   */
+  onChange: null,
+
+  init() {
+    this._super(...arguments);
+
+    this.options = defaultOptions;
+  },
+
+  didInsertElement() {
+    this._super(...arguments);
+
+    let _editor = new MediumEditor(this.element, get(this, &#x27;options&#x27;));
+    this._subscribeToEvents(_editor);
+    this._setContent(_editor);
+
+    set(this, &#x27;_editor&#x27;, _editor);
+  },
+
+  willDestroyElement() {
+    let _editor = get(this, &#x27;_editor&#x27;);
+    if (isPresent(_editor)) {
+      _editor.destroy();
+    }
+
+    this._super(...arguments);
+  },
+
+  didReceiveAtrs() {
+    this._super(...arguments);
+
+    this._setContent();
+  },
+
+  _subscribeToEvents(editor) {
+    mediumEditorEvents.forEach((event) =&gt; {
+      let handler = get(this, event);
+      if (typeof handler === &#x27;function&#x27;) {
+        editor.subscribe(event, handler.bind(this));
+      }
+    });
+
+    let onChangeHandler = get(this, &#x27;onChange&#x27;);
+    if (typeof onChangeHandler === &#x27;function&#x27;) {
+      editor.subscribe(&#x27;editableInput&#x27;, () =&gt; {
+        let content = get(this, &#x27;_editor&#x27;).getContent();
+        onChangeHandler(content);
+      });
+    }
+  },
+
+  _setContent(_editor = null) {
+    let editor = _editor || get(this, &#x27;_editor&#x27;);
+    if (isPresent(editor)) {
+      editor.setContent(get(this, &#x27;value&#x27;));
+    }
+  }
+});
+
+MediumEditorComponent.reopenClass({
+  positionalParams: [&#x27;value&#x27;]
+});
+
+export default MediumEditorComponent;
+
+    </pre>
+</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/vendor/prettify/prettify-min.js"></script>
+    <script>prettyPrint();</script>
+    <script src="../assets/vendor/jquery/jquery.min.js"></script>
+    <script src="../assets/vendor/jquery-ui/jquery-ui.min.js"></script>
+    <script src="../assets/vendor/bootstrap/js/bootstrap.js"></script>
+    <script src="../assets/vendor/github-slugger/slugger.js"></script>
+    <script src="../assets/js/yuidoc-bootstrap.js"></script>
+</body>
+</html>
