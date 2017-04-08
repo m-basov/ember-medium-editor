@@ -20,9 +20,9 @@ With `yarn`:
 
 ```handlebars
 {{medium-editor
-  model.text
-  options=(hash)
-  onChange=(action (mut model.text))}}
+    model.text
+    options=(hash)
+    onChange=(action (mut model.text))}}
 ```
 
 ## [API Docs](https://ember-medium-editor.mbasov.me/index.html)
