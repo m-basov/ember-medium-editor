@@ -19,7 +19,7 @@ With `yarn`:
 ## Usage
 
 ```handlebars
-{medium-editor
+{{medium-editor
   model.text
   options=(hash)
   onChange=(action (mut model.text))}}
