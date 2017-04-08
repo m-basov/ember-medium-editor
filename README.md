@@ -1,4 +1,4 @@
-# ember-medium-editor [![Build Status](https://travis-ci.org/kolybasov/ember-medium-editor.svg?branch=master)](https://travis-ci.org/kolybasov/ember-medium-editor)
+# ember-medium-editor[WIP DO NOT USE YET] [![Build Status](https://travis-ci.org/kolybasov/ember-medium-editor.svg?branch=master)](https://travis-ci.org/kolybasov/ember-medium-editor)
 
 [medium-editor](https://github.com/yabwe/medium-editor) library for Ember Apps.
 
