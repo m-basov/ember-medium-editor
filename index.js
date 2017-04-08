@@ -38,8 +38,8 @@ module.exports = {
         production: path.join(stylesPath, 'medium-editor.min.css')
       });
       this.import({
-        development: path.join(stylesPath, 'themes', options.theme + '.css'),
-        production: path.join(stylesPath, 'themes', options.theme + '.min.css')
+        development: path.join(stylesPath, 'themes', `${options.theme}.css`),
+        production: path.join(stylesPath, 'themes', `${options.theme}.min.css`)
       });
     }
   },

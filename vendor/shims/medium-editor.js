@@ -9,4 +9,4 @@
   }
 
   define('medium-editor', [], vendorModule);  // eslint-disable-line
-})();
+}());
