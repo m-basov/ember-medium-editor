@@ -39,3 +39,14 @@ test('it should trigger onChange action when content changed', function(assert) 
   let editor = MediumEditor.getEditorFromElement(find(meClass));
   editor.setContent('<p>typed value</p>');
 });
+
+test('it should pass options', function(assert) {
+  assert.expect(1);
+
+  this.set('meOptions', {
+    placeholder: { text: 'placeholder test' }
+  });
+  this.render(hbs`{{medium-editor options=meOptions}}`);
+
+  assert.equal(find(meClass).getAttribute('data-placeholder'), 'placeholder test');
+});

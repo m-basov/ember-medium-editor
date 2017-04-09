@@ -59,7 +59,8 @@ const MediumEditorComponent = Component.extend({
   init() {
     this._super(...arguments);
 
-    this.options = defaultOptions;
+    let options = get(this, 'options');
+    set(this, 'options', Object.assign({}, defaultOptions, options));
   },
 
   didInsertElement() {
