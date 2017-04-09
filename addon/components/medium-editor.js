@@ -97,8 +97,7 @@ const MediumEditorComponent = Component.extend({
     let onChangeHandler = get(this, 'onChange');
     if (typeof onChangeHandler === 'function') {
       editor.subscribe('editableInput', () => {
-        let content = get(this, '_editor').getContent();
-        onChangeHandler(content);
+        onChangeHandler(editor.getContent());
       });
     }
   },
