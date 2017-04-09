@@ -20,8 +20,7 @@ With `yarn`:
 
 ```js
 // config/environment.js
-// …
-let ENV = {
+let app = new EmberApp(defaults, {
   mediumEditor: {
     /**
     * If true will include only JS in the build.
@@ -39,8 +38,7 @@ let ENV = {
     */
     theme: 'default'
   }
-};
-//…
+});
 ```
 
 ## Usage
