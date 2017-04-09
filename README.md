@@ -19,7 +19,7 @@ With `yarn`:
 ## Configuration
 
 ```js
-// config/environment.js
+// ember-cli-build.js
 let app = new EmberApp(defaults, {
   mediumEditor: {
     /**
