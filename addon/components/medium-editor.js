@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import MediumEditor from 'medium-editor';
+import mediumEditorEvents from '../events-list';
+import defaultOptions from '../default-options';
 
 const {
   Component,
@@ -7,23 +9,6 @@ const {
   get,
   isPresent
 } = Ember;
-
-// Options: https://github.com/yabwe/medium-editor/blob/master/OPTIONS.md
-const defaultOptions = {};
-
-// Events: https://github.com/yabwe/medium-editor/blob/master/CUSTOM-EVENTS.md
-const mediumEditorEvents = [
-  // custom events
-  'addElement', 'blur', 'editableInput', 'externalInteraction',
-  'focus', 'removeElement',
-  // toolbar custom events
-  'hideToolbar', 'positionToolbar', 'positionedToolbar', 'showToolbar',
-  // proxied custom events
-  'editableClick', 'editableBlur', 'editableKeypress', 'editableKeyup',
-  'editableKeydown', 'editableKeydownEnter', 'editableKeydownTab',
-  'editableKeydownDelete', 'editableKeydownSpace', 'editableMouseover',
-  'editableDrag', 'editableDrop', 'editablePaste'
-];
 
 /**
  * Ember wrapper for `medium-editor` library.
@@ -88,17 +73,16 @@ const MediumEditorComponent = Component.extend({
   },
 
   willDestroyElement() {
+    this._super(...arguments);
+
     let _editor = get(this, '_editor');
     if (isPresent(_editor)) {
       _editor.destroy();
     }
-
-    this._super(...arguments);
   },
 
-  didReceiveAtrs() {
+  didUpdateAttrs() {
     this._super(...arguments);
-
     this._setContent();
   },
 
