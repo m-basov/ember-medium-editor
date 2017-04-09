@@ -1,13 +1,15 @@
 import Ember from 'ember';
 import MediumEditor from 'medium-editor';
 import mediumEditorEvents from '../events-list';
-import defaultOptions from '../default-options';
+import defaultOptions, { optionsList } from '../default-options';
 
 const {
   Component,
   set,
   get,
-  isPresent
+  isPresent,
+  getProperties,
+  A
 } = Ember;
 
 /**
@@ -58,33 +60,30 @@ const MediumEditorComponent = Component.extend({
 
   init() {
     this._super(...arguments);
-
-    let options = get(this, 'options');
-    set(this, 'options', Object.assign({}, defaultOptions, options));
+    this._setOptions();
   },
 
   didInsertElement() {
     this._super(...arguments);
-
-    let _editor = new MediumEditor(this.element, get(this, 'options'));
-    this._subscribeToEvents(_editor);
-    this._setContent(_editor);
-
-    set(this, '_editor', _editor);
+    this._initEditor();
   },
 
   willDestroyElement() {
     this._super(...arguments);
-
-    let _editor = get(this, '_editor');
-    if (isPresent(_editor)) {
-      _editor.destroy();
-    }
+    this._destroyEditor();
   },
 
   didUpdateAttrs() {
     this._super(...arguments);
     this._setContent();
+  },
+
+  _initEditor() {
+    let _editor = new MediumEditor(this.element, get(this, 'options'));
+    this._subscribeToEvents(_editor);
+    this._setContent(_editor);
+
+    set(this, '_editor', _editor);
   },
 
   _subscribeToEvents(editor) {
@@ -108,6 +107,31 @@ const MediumEditorComponent = Component.extend({
     let editor = _editor || get(this, '_editor');
     if (isPresent(editor)) {
       editor.setContent(get(this, 'value'));
+    }
+  },
+
+  _setOptions() {
+    let filteredOptions = optionsList.map((option) => (
+      isPresent(get(this, option)) ? option : null
+    ));
+    filteredOptions = (new A(filteredOptions)).compact();
+
+    let collectedOptions = getProperties(this, filteredOptions);
+    let optionsHash = get(this, 'options');
+    let options = Object.assign(
+      {},
+      defaultOptions,
+      optionsHash,
+      collectedOptions
+    );
+
+    set(this, 'options', options);
+  },
+
+  _destroyEditor() {
+    let _editor = get(this, '_editor');
+    if (isPresent(_editor)) {
+      _editor.destroy();
     }
   }
 });

@@ -50,3 +50,29 @@ test('it should pass options', function(assert) {
 
   assert.equal(find(meClass).getAttribute('data-placeholder'), 'placeholder test');
 });
+
+test('it should accept "first class" options', function(assert) {
+  assert.expect(1);
+
+  this.set('placeholderOption', {
+    text: 'test'
+  });
+  this.render(hbs`{{medium-editor placeholder=placeholderOption}}`);
+
+  assert.equal(find(meClass).getAttribute('data-placeholder'), 'test');
+});
+
+test('it should accept options with correct priority', function(assert) {
+  assert.expect(1);
+
+  this.set('optionsHash', {
+    placeholder: { text: 'hash' }
+  });
+  this.set('placeholderOption', {
+    text: 'option'
+  });
+
+  this.render(hbs`{{medium-editor options=optionsHash placeholder=placeholderOption}}`);
+
+  assert.equal(find(meClass).getAttribute('data-placeholder'), 'option');
+});
