@@ -79,7 +79,7 @@ const MediumEditorComponent = Component.extend({
   },
 
   _initEditor() {
-    let _editor = new MediumEditor(this.element, get(this, 'options'));
+    let _editor = new MediumEditor(this.element, get(this, '_collectedOptions'));
     this._subscribeToEvents(_editor);
     this._setContent(_editor);
 
@@ -124,7 +124,7 @@ const MediumEditorComponent = Component.extend({
       collectedOptions
     );
 
-    set(this, 'options', options);
+    set(this, '_collectedOptions', options);
   },
 
   _destroyEditor() {
