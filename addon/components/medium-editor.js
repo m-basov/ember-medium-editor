@@ -105,7 +105,9 @@ const MediumEditorComponent = Component.extend({
   _setContent(_editor = null) {
     let editor = _editor || get(this, '_editor');
     if (isPresent(editor)) {
+      editor.saveSelection();
       editor.setContent(get(this, 'value'));
+      editor.restoreSelection();
     }
   },
 
