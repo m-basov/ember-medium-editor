@@ -32,11 +32,7 @@ test('it should trigger onChange action when content changed', function(assert) 
   assert.expect(1);
 
   this.set('onChange', (actual) => {
-    // Action triggered twice with ember 2.4 and 2.8.
-    // Hack to use asertions only for second call.
-    if (actual !== '') {
-      assert.equal(actual, '<p>typed value</p>'); // eslint-disable-line
-    }
+    assert.equal(actual, '<p>typed value</p>');
   });
   this.render(hbs`{{medium-editor onChange=(action onChange)}}`);
 

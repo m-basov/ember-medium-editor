@@ -58,6 +58,8 @@ const MediumEditorComponent = Component.extend({
    */
   onChange: null,
 
+  _prevValue: '',
+
   init() {
     this._super(...arguments);
     this._setOptions();
@@ -94,11 +96,22 @@ const MediumEditorComponent = Component.extend({
       }
     });
 
+    this._setOnChange(editor);
+  },
+
+  _setOnChange(editor) {
     let onChangeHandler = get(this, 'onChange');
     if (typeof onChangeHandler === 'function') {
-      editor.subscribe('editableInput', () => {
-        onChangeHandler(editor.getContent());
-      });
+      let handler = () => {
+        let newValue = editor.getContent();
+        let isUpdated = get(this, '_prevValue') !== newValue;
+        if (isUpdated) {
+          set(this, '_prevValue', newValue);
+          onChangeHandler(newValue);
+        }
+      };
+
+      editor.subscribe('editableInput', handler);
     }
   },
 
