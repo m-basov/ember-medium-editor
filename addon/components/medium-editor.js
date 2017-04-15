@@ -32,6 +32,7 @@ const MediumEditorComponent = Component.extend({
   /**
    * Value to set into the editor. It is readonly.
    *
+   * @public
    * @property value
    * @default null
    * @type String
@@ -42,6 +43,7 @@ const MediumEditorComponent = Component.extend({
    * Options to pass to MediumEditor instance. List of all available options is
    * accessible by link: https://github.com/yabwe/medium-editor/blob/master/OPTIONS.md
    *
+   * @public
    * @property options
    * @default {}
    * @type {Object}
@@ -52,18 +54,12 @@ const MediumEditorComponent = Component.extend({
    * `onChange` is alias for `editableInput` event. Lists of all events:
    * https://github.com/yabwe/medium-editor/blob/master/CUSTOM-EVENTS.md
    *
+   * @public
    * @event onChange
    * @default null
    * @type {function}
    */
   onChange: null,
-
-  _prevValue: '',
-
-  init() {
-    this._super(...arguments);
-    this._setOptions();
-  },
 
   didInsertElement() {
     this._super(...arguments);
@@ -77,29 +73,52 @@ const MediumEditorComponent = Component.extend({
 
   didUpdateAttrs() {
     this._super(...arguments);
-    this._setContent();
+    this._setContent(get(this, '_editor'));
   },
 
+  /**
+   * Create `medium-editor` instance for components element and save it
+   * for further usage.
+   *
+   * @private
+   * @method _initEditor
+   */
   _initEditor() {
-    let _editor = new MediumEditor(this.element, get(this, '_collectedOptions'));
-    this._subscribeToEvents(_editor);
-    this._setContent(_editor);
+    let editor = new MediumEditor(this.element, this._getOptions());
+    this._subscribeToEvents(editor);
+    this._setContent(editor);
 
-    set(this, '_editor', _editor);
+    set(this, '_editor', editor);
   },
 
+  /**
+   * If handler from `medium-editor` events list is passed to component then
+   * subscribe to it and pass handler.
+   *
+   * @private
+   * @method _subscribeToEvents
+   * @param {MediumEditor} editor – `medium-editor` instance
+   */
   _subscribeToEvents(editor) {
     mediumEditorEvents.forEach((event) => {
       let handler = get(this, event);
       if (typeof handler === 'function') {
-        editor.subscribe(event, handler.bind(this));
+        editor.subscribe(event, handler);
       }
     });
 
-    this._setOnChange(editor);
+    this._subscribeToOnChange(editor);
   },
 
-  _setOnChange(editor) {
+  /**
+   * Subscribe for editableInput event if onChange handler is passed. Fire it
+   * only if content did change.
+   *
+   * @private
+   * @method _subscribeToOnChange
+   * @param {MediumEditor} editor – `medium-editor` instance
+   */
+  _subscribeToOnChange(editor) {
     let onChangeHandler = get(this, 'onChange');
     if (typeof onChangeHandler === 'function') {
       let handler = () => {
@@ -115,16 +134,37 @@ const MediumEditorComponent = Component.extend({
     }
   },
 
-  _setContent(_editor = null) {
-    let editor = _editor || get(this, '_editor');
-    if (isPresent(editor)) {
-      editor.saveSelection();
-      editor.setContent(get(this, 'value'));
-      editor.restoreSelection();
-    }
+  /**
+   * Update current `medium-editor` content if value did changed.
+   *
+   * @private
+   * @method _setContent
+   * @param {MediumEditor} editor – `medium-editor` instance
+   */
+  _setContent(editor) {
+    let value = get(this, 'value');
+    set(this, '_prevValue', value || '');
+
+    editor.saveSelection();
+    editor.setContent(value);
+    editor.restoreSelection();
   },
 
-  _setOptions() {
+  /**
+   * Options can be passed 3 different ways. Addon has default options, options
+   * hash and component properties from optionsList.
+   *
+   * Priority:
+   *
+   * 1. Component properties
+   * 2. options hash
+   * 3. default options
+   *
+   * @private
+   * @method _getOptions
+   * @return {Object}
+   */
+  _getOptions() {
     let filteredOptions = optionsList.map((option) => (
       isPresent(get(this, option)) ? option : null
     ));
@@ -132,20 +172,25 @@ const MediumEditorComponent = Component.extend({
 
     let collectedOptions = getProperties(this, filteredOptions);
     let optionsHash = get(this, 'options');
-    let options = Object.assign(
+
+    return Object.assign(
       {},
       defaultOptions,
       optionsHash,
       collectedOptions
     );
-
-    set(this, '_collectedOptions', options);
   },
 
+  /**
+   * Destroy MediumEditor instance if it is exists.
+   *
+   * @private
+   * @method _destroyEditor
+   */
   _destroyEditor() {
-    let _editor = get(this, '_editor');
-    if (isPresent(_editor)) {
-      _editor.destroy();
+    let editor = get(this, '_editor');
+    if (isPresent(editor)) {
+      editor.destroy();
     }
   }
 });

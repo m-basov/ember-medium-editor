@@ -2,6 +2,7 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { find } from 'ember-native-dom-helpers';
 import MediumEditor from 'medium-editor';
+import sinon from 'sinon';
 
 const meClass = '.medium-editor-element';
 
@@ -75,4 +76,27 @@ test('it should accept options with correct priority', function(assert) {
   this.render(hbs`{{medium-editor options=optionsHash placeholder=placeholderOption}}`);
 
   assert.equal(find(meClass).getAttribute('data-placeholder'), 'option');
+});
+
+test('it should not fire onChange callback if content did not change', function(assert) {
+  assert.expect(1);
+
+  let spy = sinon.spy();
+  this.set('value', 'some text');
+  this.set('onChange', spy);
+  this.render(hbs`{{medium-editor value onChange=onChange}}`);
+
+  this.set('value', 'some text');
+  assert.ok(spy.notCalled);
+});
+
+test('it should fire medium-editor events if passed', function(assert) {
+  assert.expect(1);
+
+  let spy = sinon.spy();
+  this.set('value', 'test');
+  this.set('callback', spy);
+  this.render(hbs`{{medium-editor value editableInput=callback}}`);
+
+  assert.ok(spy.calledOnce);
 });
