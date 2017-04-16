@@ -100,3 +100,47 @@ test('it should fire medium-editor events if passed', function(assert) {
 
   assert.ok(spy.calledOnce);
 });
+
+test('it should fire onUserFinishedTyping event after 1 second', function(assert) {
+  assert.expect(3);
+
+  let clock = sinon.useFakeTimers();
+  let spy = sinon.spy();
+
+  this.set('value', 'test');
+  this.set('callback', spy);
+  this.render(hbs`{{medium-editor value onUserFinishedTyping=callback}}`);
+
+  // callback should not be fired until timer elasped
+  assert.ok(spy.notCalled);
+  this.set('value', 'new');
+  assert.ok(spy.notCalled);
+  this.set('value', 'more updates');
+
+  // callback should be fired after timer
+  clock.tick(1000);
+  assert.ok(spy.calledOnce);
+
+  clock.restore();
+});
+
+test('it should respect onUserFinishedTypingDelay option', function(assert) {
+  assert.expect(2);
+
+  let clock = sinon.useFakeTimers();
+  let spy = sinon.spy();
+
+  this.set('value', 'test');
+  this.set('callback', spy);
+  this.render(hbs`{{medium-editor value onUserFinishedTyping=callback onUserFinishedTypingDelay=2000}}`);
+
+  // it should not be called after 1 second
+  clock.tick(1000);
+  assert.ok(spy.notCalled);
+
+  // it should be called after 2 second
+  clock.tick(2000);
+  assert.ok(spy.calledOnce);
+
+  clock.restore();
+});

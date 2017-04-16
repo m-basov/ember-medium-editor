@@ -9,7 +9,8 @@ const {
   get,
   isPresent,
   getProperties,
-  A
+  A,
+  run
 } = Ember;
 
 /**
@@ -61,6 +62,26 @@ const MediumEditorComponent = Component.extend({
    */
   onChange: null,
 
+  /**
+   * Amount of milliseconds to trigger `onUserFinishedTyping` event.
+   *
+   * @public
+   * @property onUserFinishedTypingDelay
+   * @default 1000
+   * @type Number
+   */
+  onUserFinishedTypingDelay: 1000,
+
+  /**
+   * Fired after user stopped typing for `onUserFinishedTypingDelay` milliseconds.
+   *
+   * @public
+   * @property onUserFinishedTyping
+   * @default null
+   * @type {function}
+   */
+  onUserFinishedTyping: null,
+
   didInsertElement() {
     this._super(...arguments);
     this._initEditor();
@@ -108,6 +129,7 @@ const MediumEditorComponent = Component.extend({
     });
 
     this._subscribeToOnChange(editor);
+    this._subscribeToOnUserFinishedTyping(editor);
   },
 
   /**
@@ -128,6 +150,27 @@ const MediumEditorComponent = Component.extend({
           set(this, '_prevValue', newValue);
           onChangeHandler(newValue);
         }
+      };
+
+      editor.subscribe('editableInput', handler);
+    }
+  },
+
+  /**
+   * Subscribe for onUserFinishedTyping event.
+   *
+   * @private
+   * @method _subscribeToOnUserFinishedTyping
+   * @param {MediumEditor} editor – `medium-editor` instance
+   */
+  _subscribeToOnUserFinishedTyping(editor) {
+    let onUserFinishedTypingHandler = get(this, 'onUserFinishedTyping');
+    if (typeof onUserFinishedTypingHandler === 'function') {
+      let delay = get(this, 'onUserFinishedTypingDelay');
+      let handler = () => {
+        run.cancel(get(this, '_onUserFinishedTypingTimeout'));
+        let later = run.later(this, onUserFinishedTypingHandler, delay);
+        set(this, '_onUserFinishedTypingTimeout', later);
       };
 
       editor.subscribe('editableInput', handler);

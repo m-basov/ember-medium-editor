@@ -54,7 +54,7 @@ let app = new EmberApp(defaults, {
 
 If you encounter any issue please report it [here](https://github.com/kolybasov/ember-medium-editor/issues).
 
-## [API Docs](https://ember-medium-editor.mbasov.me/index.html)
+## [API Docs](https://ember-medium-editor.mbasov.me/docs/index.html)
 
 ## Licence
 
