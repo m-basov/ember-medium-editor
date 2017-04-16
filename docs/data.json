@@ -2,7 +2,7 @@
     "project": {
         "name": "ember-medium-editor",
         "description": "medium-editor for Ember Apps",
-        "version": "0.1.3.c084f5bd",
+        "version": "0.1.3.41c36cab",
         "url": "https://github.com/kolybasov/ember-medium-editor",
         "indexModule": "Usage"
     },
@@ -134,7 +134,7 @@
             "description": "Fired after user stopped typing for `onUserFinishedTypingDelay` milliseconds.",
             "access": "public",
             "tagname": "",
-            "itemtype": "property",
+            "itemtype": "event",
             "name": "onUserFinishedTyping",
             "default": "null",
             "type": "{function}",

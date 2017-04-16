@@ -76,7 +76,7 @@ const MediumEditorComponent = Component.extend({
    * Fired after user stopped typing for `onUserFinishedTypingDelay` milliseconds.
    *
    * @public
-   * @property onUserFinishedTyping
+   * @event onUserFinishedTyping
    * @default null
    * @type {function}
    */
