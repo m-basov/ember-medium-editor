@@ -53,8 +53,8 @@
                     <li class="panel panel-default">
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
-                                <a role="button" href="https://github.com/kolybasov/ember-medium-editor/commits/v0.1.3" target="_blank">
-                                  Tag: v0.1.3
+                                <a role="button" href="https://github.com/kolybasov/ember-medium-editor/commits/c084f5bd" target="_blank">
+                                  Tag: 0.1.3.c084f5bd
                                 </a>
                             </h4>
                         </div>
@@ -121,7 +121,8 @@ const {
   get,
   isPresent,
   getProperties,
-  A
+  A,
+  run
 } = Ember;
 
 /**
@@ -173,6 +174,26 @@ const MediumEditorComponent = Component.extend({
    */
   onChange: null,
 
+  /**
+   * Amount of milliseconds to trigger &#x60;onUserFinishedTyping&#x60; event.
+   *
+   * @public
+   * @property onUserFinishedTypingDelay
+   * @default 1000
+   * @type Number
+   */
+  onUserFinishedTypingDelay: 1000,
+
+  /**
+   * Fired after user stopped typing for &#x60;onUserFinishedTypingDelay&#x60; milliseconds.
+   *
+   * @public
+   * @property onUserFinishedTyping
+   * @default null
+   * @type {function}
+   */
+  onUserFinishedTyping: null,
+
   didInsertElement() {
     this._super(...arguments);
     this._initEditor();
@@ -220,6 +241,7 @@ const MediumEditorComponent = Component.extend({
     });
 
     this._subscribeToOnChange(editor);
+    this._subscribeToOnUserFinishedTyping(editor);
   },
 
   /**
@@ -240,6 +262,27 @@ const MediumEditorComponent = Component.extend({
           set(this, &#x27;_prevValue&#x27;, newValue);
           onChangeHandler(newValue);
         }
+      };
+
+      editor.subscribe(&#x27;editableInput&#x27;, handler);
+    }
+  },
+
+  /**
+   * Subscribe for onUserFinishedTyping event.
+   *
+   * @private
+   * @method _subscribeToOnUserFinishedTyping
+   * @param {MediumEditor} editor – &#x60;medium-editor&#x60; instance
+   */
+  _subscribeToOnUserFinishedTyping(editor) {
+    let onUserFinishedTypingHandler = get(this, &#x27;onUserFinishedTyping&#x27;);
+    if (typeof onUserFinishedTypingHandler === &#x27;function&#x27;) {
+      let delay = get(this, &#x27;onUserFinishedTypingDelay&#x27;);
+      let handler = () =&gt; {
+        run.cancel(get(this, &#x27;_onUserFinishedTypingTimeout&#x27;));
+        let later = run.later(this, onUserFinishedTypingHandler, delay);
+        set(this, &#x27;_onUserFinishedTypingTimeout&#x27;, later);
       };
 
       editor.subscribe(&#x27;editableInput&#x27;, handler);

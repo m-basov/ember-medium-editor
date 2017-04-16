@@ -53,8 +53,8 @@
                     <li class="panel panel-default">
                         <div class="panel-heading" role="tab" id="sidebar-version-heading">
                             <h4 class="panel-title">
-                                <a role="button" href="https://github.com/kolybasov/ember-medium-editor/commits/v0.1.3" target="_blank">
-                                  Tag: v0.1.3
+                                <a role="button" href="https://github.com/kolybasov/ember-medium-editor/commits/c084f5bd" target="_blank">
+                                  Tag: 0.1.3.c084f5bd
                                 </a>
                             </h4>
                         </div>
@@ -108,7 +108,7 @@
 
 <div class="page-header">
     <h1> <i class="fa fa-bookmark-o" aria-hidden="true"></i> MediumEditor Class
-            <a class="pull-right file-edit" href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L15" target="_blank">
+            <a class="pull-right file-edit" href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L16" target="_blank">
               <i class="fa fa-pencil" aria-hidden="true"></i>
             </a>
     </h1>
@@ -122,7 +122,7 @@
 
 
         <div class="foundat">
-            Defined In: <a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L15">addon/components/medium-editor.js:15</a>
+            Defined In: <a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L16">addon/components/medium-editor.js:16</a>
         </div>
 </div>
 
@@ -207,6 +207,10 @@
                                   <a href="#method__subscribeToOnChange">_subscribeToOnChange</a>
 
                               </li>
+                              <li class="index-item method private">
+                                  <a href="#method__subscribeToOnUserFinishedTyping">_subscribeToOnUserFinishedTyping</a>
+
+                              </li>
                       </ul>
                   </div>
 
@@ -214,6 +218,14 @@
                       <h3>Properties</h3>
 
                       <ul class="index-list properties">
+                              <li class="index-item property public">
+                                  <a href="#property_onUserFinishedTyping">onUserFinishedTyping</a>
+
+                              </li>
+                              <li class="index-item property public">
+                                  <a href="#property_onUserFinishedTypingDelay">onUserFinishedTypingDelay</a>
+
+                              </li>
                               <li class="index-item property public">
                                   <a href="#property_options">options</a>
 
@@ -260,7 +272,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L184">addon/components/medium-editor.js:184</a>
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L227">addon/components/medium-editor.js:227</a>
   		</p>
   
   
@@ -296,7 +308,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L153">addon/components/medium-editor.js:153</a>
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L196">addon/components/medium-editor.js:196</a>
   		</p>
   
   
@@ -343,7 +355,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L79">addon/components/medium-editor.js:79</a>
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L100">addon/components/medium-editor.js:100</a>
   		</p>
   
   
@@ -383,7 +395,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L137">addon/components/medium-editor.js:137</a>
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L180">addon/components/medium-editor.js:180</a>
   		</p>
   
   
@@ -437,7 +449,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L94">addon/components/medium-editor.js:94</a>
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L115">addon/components/medium-editor.js:115</a>
   		</p>
   
   
@@ -492,7 +504,7 @@
   	<div class="meta">
   				<p>
   				Defined in
-  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L113">addon/components/medium-editor.js:113</a>
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L135">addon/components/medium-editor.js:135</a>
   		</p>
   
   
@@ -521,11 +533,125 @@
   
   
   </div>
+  <div id="method__subscribeToOnUserFinishedTyping" class="method item private">
+  	<span class="method-signature">
+  	<span class="name anchorable-toc">
+  		<a class="fa fa-link toc-anchor" href="#method__subscribeToOnUserFinishedTyping"></a>
+  		_subscribeToOnUserFinishedTyping
+  	</span>
+  
+  		<div class="args">
+  			<span class="paren">(</span><ul class="args-list inline commas">
+  				<li class="arg">
+  						<code>editor</code>
+  				</li>
+  			</ul><span class="paren">)</span>
+  		</div>
+  	</span>
+  
+  
+  
+  		<span class="flag private">private</span>
+  
+  
+  
+  
+  	<div class="meta">
+  				<p>
+  				Defined in
+  		<a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L159">addon/components/medium-editor.js:159</a>
+  		</p>
+  
+  
+  
+  	</div>
+  
+  	<div class="description"><p>Subscribe for onUserFinishedTyping event.</p>
+  </div>
+  
+  		<div class="params">
+  			<h4>Parameters:</h4>
+  
+  			<ul class="params-list">
+  				<li class="param">
+  						<code class="param-name">editor</code>
+  						<span class="type"><a href="../classes/MediumEditor.html" class="crosslink">MediumEditor</a></span>
+  
+  
+  					<div class="param-description"><p>– <code>medium-editor</code> instance</p>
+  </div>
+  
+  				</li>
+  			</ul>
+  		</div>
+  
+  
+  </div>
                   </div>
               </div>
 
               <div id="tab_properties" role="tabpanel" class="tab-pane">
                   <div class="item-list">
+  <div id="property_onUserFinishedTyping" class="property item public">
+      <h3 class="name anchorable-toc">
+          <a class="fa fa-link toc-anchor" href="#property_onUserFinishedTyping"></a>
+          onUserFinishedTyping
+      </h3>
+      <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" class="crosslink external" target="_blank">Function</a></span>
+  
+  
+          <span class="flag public">public</span>
+  
+  
+  
+      <div class="meta">
+                  <p>
+                  Defined in
+          <a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L75">addon/components/medium-editor.js:75</a>
+          </p>
+  
+  
+      </div>
+  
+      <div class="description">
+          <p>Fired after user stopped typing for <code>onUserFinishedTypingDelay</code> milliseconds.</p>
+  
+      </div>
+  
+          <p><br><strong>Default:</strong> null</p>
+  
+  
+  </div>
+  <div id="property_onUserFinishedTypingDelay" class="property item public">
+      <h3 class="name anchorable-toc">
+          <a class="fa fa-link toc-anchor" href="#property_onUserFinishedTypingDelay"></a>
+          onUserFinishedTypingDelay
+      </h3>
+      <span class="type"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" class="crosslink external" target="_blank">Number</a></span>
+  
+  
+          <span class="flag public">public</span>
+  
+  
+  
+      <div class="meta">
+                  <p>
+                  Defined in
+          <a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L65">addon/components/medium-editor.js:65</a>
+          </p>
+  
+  
+      </div>
+  
+      <div class="description">
+          <p>Amount of milliseconds to trigger <code>onUserFinishedTyping</code> event.</p>
+  
+      </div>
+  
+          <p><br><strong>Default:</strong> 1000</p>
+  
+  
+  </div>
   <div id="property_options" class="property item public">
       <h3 class="name anchorable-toc">
           <a class="fa fa-link toc-anchor" href="#property_options"></a>
@@ -541,7 +667,7 @@
       <div class="meta">
                   <p>
                   Defined in
-          <a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L42">addon/components/medium-editor.js:42</a>
+          <a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L43">addon/components/medium-editor.js:43</a>
           </p>
   
   
@@ -572,7 +698,7 @@
       <div class="meta">
                   <p>
                   Defined in
-          <a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L32">addon/components/medium-editor.js:32</a>
+          <a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L33">addon/components/medium-editor.js:33</a>
           </p>
   
   
@@ -608,7 +734,7 @@
       <div class="meta">
                   <p>
                   Defined in
-          <a href="https://github.com/kolybasov/ember-medium-editor/blob/v0.1.3/addon/components/medium-editor.js#L53">addon/components/medium-editor.js:53</a>
+          <a href="https://github.com/kolybasov/ember-medium-editor/blob/c084f5bd/addon/components/medium-editor.js#L54">addon/components/medium-editor.js:54</a>
           </p>
   
   
