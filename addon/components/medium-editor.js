@@ -235,6 +235,8 @@ const MediumEditorComponent = Component.extend({
     if (isPresent(editor)) {
       editor.destroy();
     }
+    // clear timers
+    run.cancel(get(this, '_onUserFinishedTypingTimeout'));
   }
 });
 

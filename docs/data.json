@@ -2,7 +2,7 @@
     "project": {
         "name": "ember-medium-editor",
         "description": "medium-editor for Ember Apps",
-        "version": "0.1.3.41c36cab",
+        "version": "0.1.3.0720cdca",
         "url": "https://github.com/kolybasov/ember-medium-editor",
         "indexModule": "Usage"
     },

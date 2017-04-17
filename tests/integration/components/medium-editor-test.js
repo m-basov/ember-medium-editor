@@ -144,3 +144,29 @@ test('it should respect onUserFinishedTypingDelay option', function(assert) {
 
   clock.restore();
 });
+
+test('it should destroy medium-editor instance when component destroyed', function(assert) {
+  assert.expect(1);
+
+  this.render(hbs`{{medium-editor}}`);
+  this.clearRender();
+
+  assert.equal(find(meClass), null);
+});
+
+test('it should not fire onUserFinishedTyping if component is destroyed', function(assert) {
+  assert.expect(1);
+
+  let clock = sinon.useFakeTimers();
+  let spy = sinon.spy();
+
+  this.set('callback', spy);
+  this.set('value', 'test');
+  this.render(hbs`{{medium-editor value onUserFinishedTyping=callback}}`);
+  this.set('value', 'new');
+  this.clearRender();
+
+  clock.tick(1000);
+  assert.ok(spy.notCalled);
+  clock.restore();
+});
