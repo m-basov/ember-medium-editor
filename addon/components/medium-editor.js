@@ -106,8 +106,8 @@ const MediumEditorComponent = Component.extend({
    */
   _initEditor() {
     let editor = new MediumEditor(this.element, this._getOptions());
-    this._subscribeToEvents(editor);
     this._setContent(editor);
+    this._subscribeToEvents(editor);
 
     set(this, '_editor', editor);
   },

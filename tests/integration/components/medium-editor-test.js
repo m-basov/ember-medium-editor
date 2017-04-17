@@ -2,7 +2,6 @@ import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { find } from 'ember-native-dom-helpers';
 import MediumEditor from 'medium-editor';
-import sinon from 'sinon';
 
 const meClass = '.medium-editor-element';
 
@@ -14,6 +13,7 @@ test('it renders', function(assert) {
   assert.expect(1);
 
   this.render(hbs`{{medium-editor}}`);
+
   assert.equal(find(meClass).innerHTML, '');
 });
 
@@ -32,32 +32,25 @@ test('it sets initial value and updates it', function(assert) {
 test('it should trigger onChange action when content changed', function(assert) {
   assert.expect(1);
 
-  this.set('onChange', (actual) => {
-    assert.equal(actual, '<p>typed value</p>');
-  });
-  this.render(hbs`{{medium-editor onChange=(action onChange)}}`);
+  this.on('onChange', (actual) => assert.equal(actual, '<p>typed</p>'));
+  this.render(hbs`{{medium-editor onChange=(action "onChange")}}`);
 
-  let editor = MediumEditor.getEditorFromElement(find(meClass));
-  editor.setContent('<p>typed value</p>');
+  MediumEditor.getEditorFromElement(find(meClass)).setContent('<p>typed</p>');
 });
 
 test('it should pass options', function(assert) {
   assert.expect(1);
 
-  this.set('meOptions', {
-    placeholder: { text: 'placeholder test' }
-  });
+  this.set('meOptions', { placeholder: { text: 'placeholder' } });
   this.render(hbs`{{medium-editor options=meOptions}}`);
 
-  assert.equal(find(meClass).getAttribute('data-placeholder'), 'placeholder test');
+  assert.equal(find(meClass).getAttribute('data-placeholder'), 'placeholder');
 });
 
 test('it should accept "first class" options', function(assert) {
   assert.expect(1);
 
-  this.set('placeholderOption', {
-    text: 'test'
-  });
+  this.set('placeholderOption', { text: 'test' });
   this.render(hbs`{{medium-editor placeholder=placeholderOption}}`);
 
   assert.equal(find(meClass).getAttribute('data-placeholder'), 'test');
@@ -66,83 +59,64 @@ test('it should accept "first class" options', function(assert) {
 test('it should accept options with correct priority', function(assert) {
   assert.expect(1);
 
-  this.set('optionsHash', {
-    placeholder: { text: 'hash' }
-  });
-  this.set('placeholderOption', {
-    text: 'option'
-  });
-
+  this.set('optionsHash', { placeholder: { text: 'hash' } });
+  this.set('placeholderOption', { text: 'option' });
   this.render(hbs`{{medium-editor options=optionsHash placeholder=placeholderOption}}`);
 
   assert.equal(find(meClass).getAttribute('data-placeholder'), 'option');
 });
 
 test('it should not fire onChange callback if content did not change', function(assert) {
-  assert.expect(1);
+  assert.expect(0);
 
-  let spy = sinon.spy();
-  this.set('value', 'some text');
-  this.set('onChange', spy);
-  this.render(hbs`{{medium-editor value onChange=onChange}}`);
+  this.on('onChange', () => assert.ok(true));
+  this.set('value', 'old');
+  this.render(hbs`{{medium-editor value onChange=(action "onChange")}}`);
 
-  this.set('value', 'some text');
-  assert.ok(spy.notCalled);
+  MediumEditor.getEditorFromElement(find(meClass)).setContent('old');
 });
 
 test('it should fire medium-editor events if passed', function(assert) {
   assert.expect(1);
 
-  let spy = sinon.spy();
+  this.on('callback', () => assert.ok(true));
+  this.render(hbs`{{medium-editor value editableInput=(action "callback")}}`);
   this.set('value', 'test');
-  this.set('callback', spy);
-  this.render(hbs`{{medium-editor value editableInput=callback}}`);
-
-  assert.ok(spy.calledOnce);
 });
 
 test('it should fire onUserFinishedTyping event after 1 second', function(assert) {
-  assert.expect(3);
+  assert.expect(1);
 
-  let clock = sinon.useFakeTimers();
-  let spy = sinon.spy();
+  let done = assert.async();
+  let start = new Date();
 
-  this.set('value', 'test');
-  this.set('callback', spy);
-  this.render(hbs`{{medium-editor value onUserFinishedTyping=callback}}`);
-
-  // callback should not be fired until timer elasped
-  assert.ok(spy.notCalled);
+  this.on('callback', () => {
+    let end = new Date();
+    assert.ok(end.getTime() - start.getTime() >= 1000);
+    done();
+  });
+  this.render(hbs`{{medium-editor value onUserFinishedTyping=(action "callback")}}`);
   this.set('value', 'new');
-  assert.ok(spy.notCalled);
-  this.set('value', 'more updates');
-
-  // callback should be fired after timer
-  clock.tick(1000);
-  assert.ok(spy.calledOnce);
-
-  clock.restore();
 });
 
 test('it should respect onUserFinishedTypingDelay option', function(assert) {
-  assert.expect(2);
+  assert.expect(1);
 
-  let clock = sinon.useFakeTimers();
-  let spy = sinon.spy();
+  let done = assert.async();
+  let start = new Date();
 
+  this.on('callback', () => {
+    let end = new Date();
+    assert.ok(end.getTime() - start.getTime() >= 2000);
+    done();
+  });
+  this.render(hbs`
+    {{medium-editor
+        value
+        onUserFinishedTyping=(action "callback")
+        onUserFinishedTypingDelay=2000}}
+  `);
   this.set('value', 'test');
-  this.set('callback', spy);
-  this.render(hbs`{{medium-editor value onUserFinishedTyping=callback onUserFinishedTypingDelay=2000}}`);
-
-  // it should not be called after 1 second
-  clock.tick(1000);
-  assert.ok(spy.notCalled);
-
-  // it should be called after 2 second
-  clock.tick(2000);
-  assert.ok(spy.calledOnce);
-
-  clock.restore();
 });
 
 test('it should destroy medium-editor instance when component destroyed', function(assert) {
@@ -155,18 +129,14 @@ test('it should destroy medium-editor instance when component destroyed', functi
 });
 
 test('it should not fire onUserFinishedTyping if component is destroyed', function(assert) {
-  assert.expect(1);
+  assert.expect(0);
 
-  let clock = sinon.useFakeTimers();
-  let spy = sinon.spy();
+  let done = assert.async();
 
-  this.set('callback', spy);
-  this.set('value', 'test');
-  this.render(hbs`{{medium-editor value onUserFinishedTyping=callback}}`);
+  this.on('callback', () => assert.ok(true));
+  this.render(hbs`{{medium-editor value onUserFinishedTyping=(action "callback")}}`);
   this.set('value', 'new');
   this.clearRender();
 
-  clock.tick(1000);
-  assert.ok(spy.notCalled);
-  clock.restore();
+  setTimeout(done, 1100);
 });
