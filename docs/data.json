@@ -2,7 +2,7 @@
     "project": {
         "name": "ember-medium-editor",
         "description": "medium-editor for Ember Apps",
-        "version": "0.1.3.0720cdca",
+        "version": "0.1.3.d35287fd",
         "url": "https://github.com/kolybasov/ember-medium-editor",
         "indexModule": "Usage"
     },
@@ -118,11 +118,11 @@
         {
             "file": "addon/components/medium-editor.js",
             "line": 65,
-            "description": "Amount of milliseconds to trigger `onUserFinishedTyping` event.",
+            "description": "Amount of milliseconds to trigger `onFinishedTyping` event.",
             "access": "public",
             "tagname": "",
             "itemtype": "property",
-            "name": "onUserFinishedTypingDelay",
+            "name": "onFinishedTypingDelay",
             "default": "1000",
             "type": "Number",
             "class": "MediumEditor",
@@ -131,11 +131,11 @@
         {
             "file": "addon/components/medium-editor.js",
             "line": 75,
-            "description": "Fired after user stopped typing for `onUserFinishedTypingDelay` milliseconds.",
+            "description": "Fired after user stopped typing for `onFinishedTypingDelay` milliseconds.",
             "access": "public",
             "tagname": "",
             "itemtype": "event",
-            "name": "onUserFinishedTyping",
+            "name": "onFinishedTyping",
             "default": "null",
             "type": "{function}",
             "class": "MediumEditor",
@@ -191,11 +191,11 @@
         {
             "file": "addon/components/medium-editor.js",
             "line": 159,
-            "description": "Subscribe for onUserFinishedTyping event.",
+            "description": "Subscribe for onFinishedTyping event.",
             "access": "private",
             "tagname": "",
             "itemtype": "method",
-            "name": "_subscribeToOnUserFinishedTyping",
+            "name": "_subscribeToOnFinishedTyping",
             "params": [
                 {
                     "name": "editor",
@@ -208,7 +208,7 @@
         },
         {
             "file": "addon/components/medium-editor.js",
-            "line": 180,
+            "line": 179,
             "description": "Update current `medium-editor` content if value did changed.",
             "access": "private",
             "tagname": "",
@@ -226,7 +226,7 @@
         },
         {
             "file": "addon/components/medium-editor.js",
-            "line": 196,
+            "line": 195,
             "description": "Options can be passed 3 different ways. Addon has default options, options\nhash and component properties from optionsList.\n\nPriority:\n\n1. Component properties\n2. options hash\n3. default options",
             "access": "private",
             "tagname": "",
@@ -241,7 +241,7 @@
         },
         {
             "file": "addon/components/medium-editor.js",
-            "line": 227,
+            "line": 226,
             "description": "Destroy MediumEditor instance if it is exists.",
             "access": "private",
             "tagname": "",

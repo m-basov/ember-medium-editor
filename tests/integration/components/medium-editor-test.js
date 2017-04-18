@@ -84,7 +84,7 @@ test('it should fire medium-editor events if passed', function(assert) {
   this.set('value', 'test');
 });
 
-test('it should fire onUserFinishedTyping event after 1 second', function(assert) {
+test('it should fire onFinishedTyping event after 1 second', function(assert) {
   assert.expect(1);
 
   let done = assert.async();
@@ -95,11 +95,11 @@ test('it should fire onUserFinishedTyping event after 1 second', function(assert
     assert.ok(end.getTime() - start.getTime() >= 1000);
     done();
   });
-  this.render(hbs`{{medium-editor value onUserFinishedTyping=(action "callback")}}`);
+  this.render(hbs`{{medium-editor value onFinishedTyping=(action "callback")}}`);
   this.set('value', 'new');
 });
 
-test('it should respect onUserFinishedTypingDelay option', function(assert) {
+test('it should respect onFinishedTypingDelay option', function(assert) {
   assert.expect(1);
 
   let done = assert.async();
@@ -113,8 +113,8 @@ test('it should respect onUserFinishedTypingDelay option', function(assert) {
   this.render(hbs`
     {{medium-editor
         value
-        onUserFinishedTyping=(action "callback")
-        onUserFinishedTypingDelay=2000}}
+        onFinishedTyping=(action "callback")
+        onFinishedTypingDelay=2000}}
   `);
   this.set('value', 'test');
 });
@@ -128,13 +128,13 @@ test('it should destroy medium-editor instance when component destroyed', functi
   assert.equal(find(meClass), null);
 });
 
-test('it should not fire onUserFinishedTyping if component is destroyed', function(assert) {
+test('it should not fire onFinishedTyping if component is destroyed', function(assert) {
   assert.expect(0);
 
   let done = assert.async();
 
   this.on('callback', () => assert.ok(true));
-  this.render(hbs`{{medium-editor value onUserFinishedTyping=(action "callback")}}`);
+  this.render(hbs`{{medium-editor value onFinishedTyping=(action "callback")}}`);
   this.set('value', 'new');
   this.clearRender();
 
