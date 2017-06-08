@@ -4,65 +4,69 @@
 const path = require('path');
 const Funnel = require('broccoli-funnel');
 const mergeTrees = require('broccoli-merge-trees');
-
-function isFastboot() {
-  return process.env.EMBER_CLI_FASTBOOT === 'true';
-}
+const map = require('broccoli-stew').map;
 
 module.exports = {
   name: 'ember-medium-editor',
 
-  included(parent) {
-    this._super.included.apply(this, arguments);
+  included(app) {
+    if (typeof app.import !== 'function' && app.app) {
+      app = app.app;
+    }
+    this.app = app;
+    this.addonConfig = this.getConfig();
 
-    // exit from hook in the fastboot mode
-    if (isFastboot()) { return; }
-
-    let options = this.getConfig(parent);
-
+    // Setup paths
     let vendorPath = this.treePaths.vendor;
     let jsPath = path.join(vendorPath, 'medium-editor', 'js');
     let stylesPath = path.join(vendorPath, 'medium-editor', 'css');
 
-    // import js
+    // Import js
     this.import({
       development: path.join(jsPath, 'medium-editor.js'),
       production: path.join(jsPath, 'medium-editor.min.js')
     });
     this.import(path.join(vendorPath, 'shims', 'medium-editor.js'));
 
-    // import styles
-    if (!options.excludeStyles) {
+    // Import styles
+    if (!this.addonConfig.excludeStyles) {
+      let theme = this.addonConfig.theme;
       this.import({
         development: path.join(stylesPath, 'medium-editor.css'),
         production: path.join(stylesPath, 'medium-editor.min.css')
       });
       this.import({
-        development: path.join(stylesPath, 'themes', `${options.theme}.css`),
-        production: path.join(stylesPath, 'themes', `${options.theme}.min.css`)
+        development: path.join(stylesPath, 'themes', `${theme}.css`),
+        production: path.join(stylesPath, 'themes', `${theme}.min.css`)
       });
     }
+
+    return this._super.included.apply(this, arguments);
   },
 
   treeForVendor(vendorTree) {
-    // do not include assets in the fastboot mode
-    if (isFastboot()) { return vendorTree; }
+    let moduleName = 'medium-editor';
+    let modulePath = path.join(require.resolve(moduleName), '..', '..');
 
-    let distPath = path.join(require.resolve('medium-editor'), '..', '..');
-    let meTree = new Funnel(distPath, {
-      include: ['**/*'],
-      destDir: 'medium-editor'
+    let jsTree = new Funnel(modulePath, {
+      include: ['js/**/*'],
+      destDir: moduleName
     });
 
-    return mergeTrees([vendorTree, meTree]);
+    jsTree = map(jsTree, (content) => `if (typeof FastBoot === 'undefined') { ${content} }`);
+
+    let cssTree = new Funnel(modulePath, {
+      include: ['css/**/*'],
+      destDir: moduleName
+    });
+
+    return mergeTrees([vendorTree, jsTree, cssTree]);
   },
 
-  getConfig(parent) {
-    let defaultConfig = {
+  getConfig() {
+    return Object.assign({
       excludeStyles: false,
       theme: 'default'
-    };
-
-    return Object.assign(defaultConfig, parent.options.mediumEditor);
+    }, this.app.options.mediumEditor);
   }
 };
