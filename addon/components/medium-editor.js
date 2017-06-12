@@ -82,6 +82,8 @@ const MediumEditorComponent = Component.extend({
    */
   onFinishedTyping: null,
 
+  _skipNextOnChangeTrigger: false,
+
   didInsertElement() {
     this._super(...arguments);
     this._initEditor();
@@ -94,6 +96,7 @@ const MediumEditorComponent = Component.extend({
 
   didUpdateAttrs() {
     this._super(...arguments);
+    this.set('_skipNextOnChangeTrigger', true);
     this._setContent(get(this, '_editor'));
   },
 
@@ -146,10 +149,12 @@ const MediumEditorComponent = Component.extend({
       let handler = () => {
         let newValue = editor.getContent();
         let isUpdated = get(this, '_prevValue') !== newValue;
-        if (isUpdated) {
+        let skipNextOnChangeTrigger = get(this, `_skipNextOnChangeTrigger`);
+        if (isUpdated && !skipNextOnChangeTrigger) {
           set(this, '_prevValue', newValue);
           onChangeHandler(newValue);
         }
+        set(this, `_skipNextOnChangeTrigger`, false);
       };
 
       editor.subscribe('editableInput', handler);
