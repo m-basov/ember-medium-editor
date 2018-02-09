@@ -1,17 +1,11 @@
-import Ember from 'ember';
 import MediumEditor from 'medium-editor';
 import mediumEditorEvents from '../events-list';
 import defaultOptions, { optionsList } from '../default-options';
-
-const {
-  Component,
-  set,
-  get,
-  isPresent,
-  getProperties,
-  A,
-  run: { debounce, cancel }
-} = Ember;
+import Component from '@ember/component';
+import { set, get, getProperties } from '@ember/object';
+import { A } from '@ember/array';
+import { debounce, cancel } from '@ember/runloop';
+import { isPresent } from '@ember/utils';
 
 /**
  * Ember wrapper for `medium-editor` library.
