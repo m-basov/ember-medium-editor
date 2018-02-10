@@ -1,1 +1,31 @@
-{{medium-editor}}
+<section>
+  <h2>All defaults</h2>
+  {{medium-editor}}
+</section>
+
+<section>
+  <h2>Customized</h2>
+  {{#medium-editor as |editor|}}
+    {{#editor.toolbar as |buttons|}}
+      {{#buttons.italic}}
+        <i>Italic</i>
+      {{/buttons.italic}}
+      {{buttons.bold}}
+    {{/editor.toolbar}}
+
+    {{editor.anchor-preview}}
+
+    {{editor.placeholder
+      text="Custom"}}
+
+    {{editor.anchor-form}}
+
+    {{editor.paste}}
+
+    {{editor.keyboard-commands}}
+
+    {{editor.auto-link}}
+
+    {{editor.image-dragging}}
+  {{/medium-editor}}
+</section>
