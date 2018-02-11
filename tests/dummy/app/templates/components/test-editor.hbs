@@ -10,13 +10,16 @@
       {{#buttons.italic}}
         <i>Italic</i>
       {{/buttons.italic}}
+
       {{buttons.bold}}
     {{/editor.toolbar}}
 
     {{editor.anchor-preview}}
 
-    {{editor.placeholder
-      text="Custom"}}
+    {{#if show}}
+      {{editor.placeholder
+        text="Custom"}}
+    {{/if}}
 
     {{editor.anchor-form}}
 

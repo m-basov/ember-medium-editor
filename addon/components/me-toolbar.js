@@ -41,10 +41,15 @@ export default Component.extend(MeExtensionMixin, {
   },
 
   actions: {
-    registerButton(btn) {
-      log`_registerButton: ${btn}`;
+    registerButton(btn, remove = false) {
       let buttons = get(this, '_buttons') || [];
-      buttons.push(btn);
+      if (remove) {
+        log`_registerButton:remove: ${btn}`;
+        buttons = buttons.filter((b) => b.name !== btn.name);
+      } else {
+        log`_registerButton: ${btn}`;
+        buttons = [...buttons, btn];
+      }
       set(this, '_buttons', buttons);
 
       this.scheduleRegisterExtension();

@@ -20,7 +20,7 @@ runInDebug(() => {
     return (strings, ...vars) => {
       let prefix = namespaces.join(':');
       let stringsCopy = [...strings];
-      stringsCopy[0] = prefix + ': ' + stringsCopy[0];
+      stringsCopy[0] = prefix + ':' + stringsCopy[0];
       return logger(stringsCopy, ...vars);
     };
   }

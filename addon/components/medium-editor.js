@@ -5,6 +5,7 @@ import { set, getProperties, get } from '@ember/object';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { schedule } from '@ember/runloop';
 import createLogger from 'ember-medium-editor/utils/logger';
+import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
 
 const log = createLogger('component', 'medium-editor');
 /** These are the default options for the editor,
@@ -35,6 +36,7 @@ export default Component.extend({
   // internal props
   _instance: null,
   _options: null,
+  _instanceOptions: null,
   // internal props
 
   // props
@@ -57,16 +59,19 @@ export default Component.extend({
   // hooks
 
   // methods
-  _setupMediumEditor() {
+  _setupMediumEditor(forceRerender = false) {
     schedule('afterRender', () => {
-      this._maybeDestroyPrevInstance();
       let options = createOptions(
         getProperties(this, CORE_OPTIONS),
         get(this, '_options') || {}
       );
-      let instance = new MediumEditor(this.element, options);
-      set(this, '_instance', instance);
-      log`_setupMediumEditor: options:${options}instance:${instance}`;
+      if (forceRerender || this._shouldRerender(options)) {
+        this._maybeDestroyPrevInstance();
+        let el = this.element.getElementsByClassName('ember-medium-editor-container')[0];
+        let instance = new MediumEditor(el, options);
+        set(this, '_instance', instance);
+        log`_setupMediumEditor: options:${options}instance:${instance}`;
+      }
     });
   },
 
@@ -78,15 +83,23 @@ export default Component.extend({
       log`_maybeDestroyPrevInstance: destroyed`;
     }
   },
+
+  _shouldRerender(options) {
+    let instanceOptions = get(this, '_instanceOptions');
+    set(this, '_instanceOptions', options);
+    let isNotEqual = !shallowEqual(options, instanceOptions);
+    log`_shouldRerender: ${isNotEqual}`;
+    return isNotEqual;
+  },
   // methods
 
   actions: {
-    registerExtension(key, val) {
+    registerExtension(key, val, props = {}) {
       log`registerExtension: key:${key}val:${val}`;
       let options = get(this, '_options') || {};
       options[key] = val;
       set(this, '_options', options);
-      this._setupMediumEditor();
+      this._setupMediumEditor(props.forceRerender);
     }
   }
 });

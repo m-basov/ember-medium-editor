@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { later } from '@ember/runloop';
 
 export default Component.extend({
   show: true,
@@ -6,6 +7,6 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    // console.log('test-editor', this); // eslint-disable-line
+    later(() => this.set('show', false), 3000);
   }
 });

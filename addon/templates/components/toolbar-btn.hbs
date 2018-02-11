@@ -1,5 +1,3 @@
-{{#if (and (has-block) destinationElement)}}
-  {{#ember-wormhole destinationElement=destinationElement}}
-    <div class="toolbar-btn">{{yield}}</div>
-  {{/ember-wormhole}}
-{{/if}}
+{{#render-to-string afterRender=(action "scheduleRegister")~}}
+  {{yield}}
+{{~/render-to-string}}

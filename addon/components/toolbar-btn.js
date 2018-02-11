@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { get, getProperties } from '@ember/object';
+import { set,get, getProperties } from '@ember/object';
 import MediumEditor from 'medium-editor';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { isEmpty } from '@ember/utils';
@@ -30,7 +30,7 @@ const BUTTON_OPTIONS_COLLISIONS = [
 function createBtn(builtIn, options, content) {
   log`createBtn: builtIn:${builtIn}options:${options}content:${content}`;
   let defaults = builtIn ? BUTTON_DEFAULTS[builtIn] : {};
-  content = isEmpty(content) ? undefined : content;
+  content = isEmpty(content) || content === '<!---->' ? undefined : content;
   options.contentDefault = content;
   options.contentFA = content;
   return createOptions(defaults, options);
@@ -43,25 +43,36 @@ export default Component.extend({
   builtIn: false,
   registerButton() {},
 
-  init() {
-    this._super(...arguments);
-
-    log`init`;
-    this._register();
+  willDestroyElement() {
+    this._super();
+    this._unregister();
   },
 
-  _register() {
+  _register(el) {
     schedule('afterRender', () => {
       let builtIn = get(this, 'builtIn');
       let options = getProperties(this, BUTTON_OPTIONS);
       BUTTON_OPTIONS_COLLISIONS.forEach((opt) => {
         options[opt.key] = get(this, opt.safeKey);
       });
-      let content = get(this, 'destinationElement');
-      let btn = createBtn(builtIn, options, content);
+      let btn = createBtn(builtIn, options, el);
+      set(this, '_btn', btn);
 
       log`_register: ${btn}`;
       invokeAction(this, 'registerButton', btn);
     });
+  },
+
+  _unregister() {
+    let btn = get(this, '_btn');
+    log`_unregister: ${btn}`;
+    invokeAction(this, 'registerButton', btn, true);
+  },
+
+  actions: {
+    scheduleRegister(el) {
+      log`scheduleRegister: ${el}`;
+      this._register(el);
+    }
   }
 });
