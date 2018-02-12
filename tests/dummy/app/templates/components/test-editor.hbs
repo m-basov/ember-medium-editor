@@ -1,34 +1,102 @@
 <section>
-  <h2>All defaults</h2>
-  {{medium-editor}}
-</section>
+  <h2>Editor</h2>
 
-<section>
-  <h2>Customized</h2>
-  {{#medium-editor as |editor|}}
-    {{#editor.toolbar as |buttons|}}
-      {{#buttons.italic}}
-        <i>Italic</i>
-      {{/buttons.italic}}
-
-      {{buttons.bold}}
+  {{#medium-editor
+    activeButtonClass=coreOptions.activeButtonClass
+    buttonLabels=coreOptions.buttonLabels
+    contentWindow=coreOptions.contentWindow
+    delay=coreOptions.delay
+    disableReturn=coreOptions.disableReturn
+    disableDoubleReturn=coreOptions.disableDoubleReturn
+    disableExtraSpaces=coreOptions.disableExtraSpaces
+    disableEditing=coreOptions.disableEditing
+    elementsContainer=coreOptions.elementsContainer
+    extensions=coreOptions.extensions
+    ownerDocument=coreOptions.ownerDocument
+    spellCheck=coreOptions.spellCheck
+    targetBlank=coreOptions.targetBlank
+    as |editor|}}
+    {{#editor.toolbar
+      allowMultiParagraphSelection=toolbarOptions.allowMultiParagraphSelection
+      diffLeft=toolbarOptions.diffLeft
+      diffTop=toolbarOptions.diffTop
+      firstButtonClass=toolbarOptions.firstButtonClass
+      lastButtonClass=toolbarOptions.lastButtonClass
+      relativeContainer=toolbarOptions.relativeContainer
+      standardizeSelectionStart=toolbarOptions.standardizeSelectionStart
+      static=toolbarOptions.static
+      align=toolbarOptions.align
+      sticky=toolbarOptions.sticky
+      updateOnEmptySelection=toolbarOptions.updateOnEmptySelection
+      as |buttons|}}
+      {{#each toolbarOptions.buttons as |button|}}
+        {{component (get buttons button)}}
+      {{/each}}
     {{/editor.toolbar}}
 
-    {{editor.anchor-preview}}
+    {{editor.anchor-preview
+      hideDelay=anchorPreviewOptions.hideDelay
+      previewValueSelector=anchorPreviewOptions.previewValueSelector
+      disabled=anchorPreviewOptions.disabled}}
 
-    {{#if show}}
-      {{editor.placeholder
-        text="Custom"}}
-    {{/if}}
+    {{editor.placeholder
+      text=placeholderOptions.text
+      hideOnClick=placeholderOptions.hideOnClick
+      disabled=placeholderOptions.disabled}}
 
-    {{editor.anchor-form}}
+    {{editor.anchor-form
+      customClassOption=anchorFormOptions.customClassOption
+      customClassOptionText=anchorFormOptions.customClassOptionText
+      linkValidation=anchorFormOptions.linkValidation
+      placeholderText=anchorFormOptions.placeholderText
+      targetCheckbox=anchorFormOptions.targetCheckbox
+      targetCheckboxText=anchorFormOptions.targetCheckboxText
+      disabled=anchorFormOptions.disabled}}
 
-    {{editor.paste}}
+    {{editor.paste
+      forcePlainText=pasteOptions.forcePlainText
+      cleanPastedHTML=pasteOptions.cleanPastedHTML
+      cleanReplacements=pasteOptions.cleanReplacements
+      cleanAttrs=pasteOptions.cleanAttrs
+      cleanTags=pasteOptions.meta
+      disabled=pasteOptions.disabled}}
 
-    {{editor.keyboard-commands}}
+    {{#editor.keyboard-commands
+      disabled=keyboardCommandsOptions.disabled
+      as |kb|}}
+      {{#each keyboardCommandsOptions.commands as |cmd|}}
+        {{kb.command
+          command=cmd.command
+          key=cmd.key
+          meta=cmd.meta
+          shift=cmd.shift}}
+      {{/each}}
+    {{/editor.keyboard-commands}}
 
-    {{editor.auto-link}}
+    {{editor.auto-link
+      disabled=autoLinkOptions}}
 
-    {{editor.image-dragging}}
+    {{editor.image-dragging
+      disabled=imageDraggingOptions}}
   {{/medium-editor}}
 </section>
+
+<form onsubmit={{action "preventDefault"}}>
+  <h2>Configurator</h2>
+
+  {{!--#each sections as |section|}}
+    <div>
+      <h4>{{section.name}} Options</h4>
+
+      {{#each section.options as |option|}}
+        {{component (get option.component)
+          value=option.value
+          disabled=option.disabled
+          label=option.label
+          default=option.default
+          hint=option.hint
+          on-change=(action (mut option.value))}}
+      {{/each}}
+    </div>
+  {{/each-in--}}
+</form>

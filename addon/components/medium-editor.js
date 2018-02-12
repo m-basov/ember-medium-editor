@@ -13,7 +13,6 @@ const log = createLogger('component', 'medium-editor');
   * https://github.com/yabwe/medium-editor/blob/master/OPTIONS.md#core-options
   */
 const CORE_OPTIONS = [
-  'allowMultiParagraphSelection', // true
   'buttonLabels',                 // false
   'contentWindow',                // window
   'delay',                        // 0

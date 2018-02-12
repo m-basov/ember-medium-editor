@@ -1,0 +1,9 @@
+<label for={{toggleId}}>{{label}}</label>
+
+{{log "options-editor" "checkbox" value}}
+<input
+  type="checkbox"
+  value={{value}}
+  checked={{value}}
+  id={{toggleId}}
+  onclick={{action on-toggle value="target.value"}}>

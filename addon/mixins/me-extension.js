@@ -12,6 +12,16 @@ const log = createLogger('mixin', 'me-extension');
 export default Mixin.create({
   tagName: '',
 
+  enabled: true,
+  disabled: computed('enabled', {
+    get() {
+      return !get(this, 'enabled');
+    },
+    set(key, value) {
+      log`setDisabled: ${value} ${!value}`;
+      return set(this, 'enabled', !value);
+    }
+  }),
   defaultOptions: computed(() => assert('You must override defaultOptions property')),
   registerExtension() {},
 
@@ -27,7 +37,8 @@ export default Mixin.create({
 
   scheduleRegisterExtension() {
     schedule('afterRender', () => {
-      let options = this.createOptions();
+      let options = get(this, 'enabled');
+      if (options) options = this.createOptions();
       if (this._shouldRerender(options)) {
         log`scheduleRegisterExtension: ${options}`;
         invokeAction(this, 'registerExtension', options, { forceRerender: true });
@@ -50,7 +61,7 @@ export default Mixin.create({
     let instanceOptions = get(this, '_instanceOptions');
     set(this, '_instanceOptions', options);
     let isNotEqual = !shallowEqual(options, instanceOptions);
-    log`_shouldRerender: ${isNotEqual}`;
+    log`_shouldRerender: ${isNotEqual} ${options} ${instanceOptions}`;
     return isNotEqual;
   }
 });
