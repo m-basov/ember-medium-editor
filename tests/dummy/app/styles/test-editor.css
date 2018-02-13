@@ -1,0 +1,11 @@
+.test-editor {
+  display: flex;
+}
+
+.test-editor__section {
+  flex: 0.5;
+}
+
+.test-editor__section-heading {
+  text-align: left;
+}

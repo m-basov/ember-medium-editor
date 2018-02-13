@@ -9,6 +9,11 @@ module.exports = function(defaults) {
     },
     vendorFiles: {
       'jquery.js': null
+    },
+    babel: {
+      plugins: [
+        'transform-object-rest-spread'
+      ]
     }
   });
 

@@ -27,7 +27,7 @@ const CORE_OPTIONS = [
   'targetBlank'                   // false
 ];
 
-export default Component.extend({
+const MediumEditorComponent = Component.extend({
   // component props
   layout,
   // component props
@@ -39,6 +39,7 @@ export default Component.extend({
   // internal props
 
   // props
+  value: null,
   // props
 
   // hooks
@@ -68,6 +69,7 @@ export default Component.extend({
         this._maybeDestroyPrevInstance();
         let el = this.element.getElementsByClassName('ember-medium-editor-container')[0];
         let instance = new MediumEditor(el, options);
+        instance.setContent(get(this, 'value'));
         set(this, '_instance', instance);
         log`_setupMediumEditor: options:${options}instance:${instance}`;
       }
@@ -102,3 +104,9 @@ export default Component.extend({
     }
   }
 });
+
+MediumEditorComponent.reopenClass({
+  positionalParams: ['value']
+});
+
+export default MediumEditorComponent;
