@@ -1,6 +1,10 @@
-<input
-  type="checkbox"
-  checked={{value}}
-  id={{controlId}}
-  disabled={{disabled}}
-  onchange={{action on-change value="target.checked"}}>
+<label for={{controlId}} class="oe-control__toggle">
+  <input
+    class="oe-control__toggle-checkbox"
+    type="checkbox"
+    checked={{value}}
+    id={{controlId}}
+    disabled={{disabled}}
+    onchange={{action on-change value="target.checked"}}>
+  <span class="oe-control__toggle-slider"></span>
+</label>

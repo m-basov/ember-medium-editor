@@ -67,7 +67,7 @@ const MediumEditorComponent = Component.extend({
       );
       if (forceRerender || this._shouldRerender(options)) {
         this._maybeDestroyPrevInstance();
-        let el = this.element.getElementsByClassName('ember-medium-editor-container')[0];
+        let el = this.element.getElementsByClassName('ember-medium-editor__container')[0];
         let instance = new MediumEditor(el, options);
         instance.setContent(get(this, 'value'));
         set(this, '_instance', instance);

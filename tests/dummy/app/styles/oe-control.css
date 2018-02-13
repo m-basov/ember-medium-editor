@@ -1,19 +1,62 @@
 .oe-control {
-
+  margin-bottom: 30px;
+  background-color: #f1f3f5;
+  padding: 1px 10px;
 }
 
 .oe-control__label {
-
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .oe-control__hint {
-
+  font-size: 12px;
+  margin-top: 5px;
 }
 
-.oe-control__default {
-
+.oe-control__default-value {
+  font-size: 14px;
+  margin-bottom: 5px;
 }
 
 .oe-control__control {
+}
 
+.oe-control__input {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  padding: 5px 10px;
+  font-size: 16px;
+  box-shadow: inset 0px -1px 1px 0px #868e96;
+}
+
+.oe-control__input[disabled] {
+  opacity: 0.6;
+}
+
+.oe-control__select-trigger,
+.oe-control__select-trigger--open,
+.oe-control__tag-input-trigger,
+.oe-control__tag-input-trigger--open {
+  cursor: pointer;
+  border: none !important;
+  box-shadow: inset 0px -1px 1px 0px #868e96;
+}
+
+.oe-control__select-trigger,
+.oe-control__select-dropdown,
+.oe-control__tag-input-trigger,
+.oe-control__tag-input-dropdown,
+.oe-control__tag-input-trigger .ember-power-select-multiple-option {
+  border-radius: 0;
+}
+
+.oe-control__select-dropdown .ember-power-select-option[aria-current="true"],
+.oe-control__tag-input-dropdown .ember-power-select-option[aria-current="true"] {
+  background-color: #20c997;
+}
+
+.oe-control__tag-input-trigger .ember-power-select-multiple-option {
+  background-color: #f1f3f5;
 }

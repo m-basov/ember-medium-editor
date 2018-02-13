@@ -90,22 +90,27 @@
   <h2 class="test-editor__section-heading">Configurator</h2>
 
   {{#each-in mediumEditorOptions as |section sectionProps|}}
-    <div class="configurator-section">
-      <h4 class="configurator-section__heading">
+    <div class="configurator-section {{if (contains section openSections) "configurator-section--open"}}">
+      <h4
+        class="configurator-section__heading"
+        onclick={{action "toggleSection" section (contains section openSections)}}>
         {{label-for section}} Options
       </h4>
-      <p class="configurator-section__description">
-        {{sectionProps.description}}
-      </p>
 
-      <div class="configurator-section__controls">
-        {{#each-in sectionProps.options as |option props|}}
-          {{oe-control
-            name=option
-            option=props
-            on-change=(action "updateOption" section option)}}
-        {{/each-in}}
-      </div>
+      {{#if (contains section openSections)}}
+        <p class="configurator-section__description">
+          {{sectionProps.description}}
+        </p>
+
+        <div class="configurator-section__controls">
+          {{#each-in sectionProps.options as |option props|}}
+            {{oe-control
+              name=option
+              option=props
+              on-change=(action "updateOption" section option)}}
+          {{/each-in}}
+        </div>
+      {{/if}}
     </div>
   {{/each-in}}
 </form>
