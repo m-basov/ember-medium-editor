@@ -2,8 +2,12 @@
   display: flex;
 }
 
-.test-editor__section {
-  flex: 0.5;
+.test-editor__section:first-child {
+  flex: 0.6;
+}
+
+.test-editor__section:last-child {
+  flex: 0.3;
 }
 
 .test-editor__section-heading {
