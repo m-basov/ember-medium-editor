@@ -1,8 +1,6 @@
-<label for={{toggleId}}>{{label}}</label>
-
 <input
   type="checkbox"
-  value={{value}}
   checked={{value}}
-  id={{toggleId}}
-  onclick={{action on-toggle value="target.value"}}>
+  id={{controlId}}
+  disabled={{disabled}}
+  onchange={{action on-change value="target.checked"}}>

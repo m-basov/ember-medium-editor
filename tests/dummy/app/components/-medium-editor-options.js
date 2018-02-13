@@ -1,10 +1,3 @@
-function componentFor(value, defaultComponent) {
-  if (defaultComponent) return defaultComponent;
-  if (Array.isArray(value)) return 'oe-tag-input';
-  if (typeof value === 'boolean') return 'oe-toggle';
-  return 'oe-input';
-}
-
 /**
  * Create option for configurator
  */
@@ -15,7 +8,7 @@ function createOption(name, value, hint, others = {}) {
       hint,
       disabled: typeof others.disabled === 'boolean' ? others.disabled : false,
       default: typeof others.default !== 'undefined' ? others.default : value,
-      component: componentFor(value, others.component),
+      component: others.component,
       availableValues: others.availableValues
     }
   };
@@ -36,8 +29,9 @@ export default {
       ),
       ...createOption(
         'buttonLabels',
-        false,
-        `Custom content for the toolbar buttons. Valid Values: false Use default button labels 'fontawesome'Uses fontawesome icon set for all toolbar icons NOTE: Using 'fontawesome' as the buttonLabels requires version 4.1.0 of the fontawesome css to be on the page to ensure all icons will be displayed correctly.`
+        'false',
+        `Custom content for the toolbar buttons. Valid Values: false Use default button labels 'fontawesome'Uses fontawesome icon set for all toolbar icons NOTE: Using 'fontawesome' as the buttonLabels requires version 4.1.0 of the fontawesome css to be on the page to ensure all icons will be displayed correctly.`,
+        { component: 'oe-select', availableValues: ['false', 'fontawesome'] }
       ),
       ...createOption(
         'contentWindow',
@@ -148,7 +142,7 @@ export default {
         'align',
         'center',
         'When the static option is true, this aligns the static toolbar relative to the medium-editor element.',
-        { availableValues: ['left', 'center', 'right'] }
+        { availableValues: ['left', 'center', 'right'], component: 'oe-select' }
       ),
       ...createOption(
         'sticky',

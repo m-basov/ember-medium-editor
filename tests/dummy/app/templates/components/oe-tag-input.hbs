@@ -1,0 +1,10 @@
+{{#power-select-multiple
+  options=internalOptions
+  selected=value
+  disabled=disabled
+  triggerId=controlId
+  onchange=on-change
+  onkeydown=(action "createOnEnter")
+  as |item|}}
+  {{item}}
+{{/power-select-multiple}}

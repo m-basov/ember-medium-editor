@@ -1,18 +1,13 @@
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
 
 const OEInput = Component.extend({
-  label: 'Option',
+  tagName: '',
+
   type: 'text',
   value: undefined,
-  'on-change'() {},
-
-  inputId: computed('elementId', {
-    get() {
-      let id = get(this, 'elementId');
-      return `oe-input-${id}`;
-    }
-  })
+  disabled: false,
+  controlId: null,
+  'on-change'() {}
 });
 
 OEInput.reopenClass({

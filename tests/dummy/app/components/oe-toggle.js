@@ -1,17 +1,12 @@
 import Component from '@ember/component';
-import { get, computed } from '@ember/object';
 
 const OEToggle = Component.extend({
-  value: false,
-  label: 'Option toggle',
-  'on-toggle'() {},
+  tagName: '',
 
-  toggleId: computed('elementId', {
-    get() {
-      let id = get(this, 'elementId');
-      return `oe-toggle-${id}`;
-    }
-  })
+  value: false,
+  disabled: false,
+  controlId: null,
+  'on-change'() {}
 });
 
 OEToggle.reopenClass({
