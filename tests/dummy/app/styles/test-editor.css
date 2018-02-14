@@ -4,14 +4,16 @@
 
 .test-editor__section {
   padding: 10px 15px;
+  max-height: 100vh;
+  overflow-x: auto;
 }
 
 .test-editor__section:first-child {
-  flex: 0.6;
+  flex: 0.65;
 }
 
 .test-editor__section:last-child {
-  flex: 0.3;
+  flex: 0.35;
 }
 
 .test-editor__section-heading {
@@ -37,6 +39,7 @@
 .ember-medium-editor__container h3,
 .ember-medium-editor__container h4,
 .ember-medium-editor__container h5,
-.ember-medium-editor__container h6 {
+.ember-medium-editor__container h6,
+.ember-medium-editor__container a {
   color: #20c997;
 }

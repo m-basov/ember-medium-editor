@@ -3,13 +3,13 @@
 {{yield
   (hash
     registerExtension=(action "registerExtension")
-    toolbar=(component "me-toolbar" registerExtension=(action "registerExtension" "toolbar"))
-    anchor-preview=(component "me-anchor-preview" registerExtension=(action "registerExtension" "anchorPreview"))
-    anchor-form=(component "me-anchor-form" registerExtension=(action "registerExtension" "anchorForm"))
-    auto-link=(component "me-auto-link" registerExtension=(action "registerExtension" "autoLink"))
-    keyboard-commands=(component "me-keyboard-commands" registerExtension=(action "registerExtension" "keyboardCommands"))
-    paste=(component "me-paste" registerExtension=(action "registerExtension" "paste"))
-    placeholder=(component "me-placeholder" registerExtension=(action "registerExtension" "placeholder"))
-    image-dragging=(component "me-image-dragging" registerExtension=(action "registerExtension" "imageDragging"))
+    toolbar=(component "me-toolbar" registerExtension=(action "registerBuiltInExtension" "toolbar"))
+    anchor-preview=(component "me-anchor-preview" registerExtension=(action "registerBuiltInExtension" "anchorPreview"))
+    anchor-form=(component "me-anchor-form" registerExtension=(action "registerBuiltInExtension" "anchor"))
+    auto-link=(component "me-auto-link" registerExtension=(action "registerBuiltInExtension" "autoLink"))
+    keyboard-commands=(component "me-keyboard-commands" registerExtension=(action "registerBuiltInExtension" "keyboardCommands"))
+    paste=(component "me-paste" registerExtension=(action "registerBuiltInExtension" "paste"))
+    placeholder=(component "me-placeholder" registerExtension=(action "registerBuiltInExtension" "placeholder"))
+    image-dragging=(component "me-image-dragging" registerExtension=(action "registerBuiltInExtension" "imageDragging"))
   )
   _instance}}

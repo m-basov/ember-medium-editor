@@ -87,7 +87,7 @@
 </section>
 
 <form onsubmit={{action "preventDefault"}} class="test-editor__section">
-  <h2 class="test-editor__section-heading">Configurator</h2>
+  <h2 class="test-editor__section-heading">Options</h2>
 
   {{#each-in mediumEditorOptions as |section sectionProps|}}
     <div class="configurator-section {{if (contains section openSections) "configurator-section--open"}}">

@@ -2,11 +2,12 @@ import Component from '@ember/component';
 import MeExtensionMixin from 'ember-medium-editor/mixins/me-extension';
 
 const PASTE_OPTIONS = [
-  'forcePlainText',    // true,
-  'cleanPastedHTML',   // false,
-  'cleanReplacements', // [],
-  'cleanAttrs',        // ['class', 'style', 'dir'],
-  'cleanTags',         // ['meta']
+  'forcePlainText',
+  'cleanPastedHTML',
+  'cleanReplacements',
+  'cleanAttrs',
+  'cleanTags',
+  'unwrapTags'
 ];
 
 export default Component.extend(MeExtensionMixin, {

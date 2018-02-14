@@ -1,4 +1,4 @@
 {{yield (hash
-  registerCommand=(action "registerCommand")
-  command=(component "keyboard-command" registerCommand=(action "registerCommand"))
+  registerCommand=(action "pushChild" "commands")
+  command=(component "keyboard-command" registerCommand=(action "pushChild" "commands"))
 )}}

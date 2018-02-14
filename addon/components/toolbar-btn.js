@@ -1,16 +1,15 @@
 import Component from '@ember/component';
-import { set,get, getProperties } from '@ember/object';
+import { set,get, getProperties, computed } from '@ember/object';
 import MediumEditor from 'medium-editor';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { isEmpty } from '@ember/utils';
 import layout from 'ember-medium-editor/templates/components/toolbar-btn';
 import { schedule } from '@ember/runloop';
 import { invokeAction } from 'ember-invoke-action';
-import createLogger from 'ember-medium-editor/utils/logger';
-
-const log = createLogger('component', 'toolbar-btn');
+import { guidFor } from '@ember/object/internals';
 
 const BUTTON_DEFAULTS = MediumEditor.extensions.button.prototype.defaults;
+const ANCHOR_DEFAULTS = MediumEditor.extensions.anchor.prototype;
 
 const BUTTON_OPTIONS = [
   'name',
@@ -27,9 +26,19 @@ const BUTTON_OPTIONS_COLLISIONS = [
   { key: 'action', safeKey: 'btnAction' }
 ];
 
+function getDefaults(builtIn) {
+  switch (builtIn) {
+    case 'anchor':
+      return ANCHOR_DEFAULTS;
+    case false:
+      return {};
+    default:
+      return BUTTON_DEFAULTS[builtIn];
+  }
+}
+
 function createBtn(builtIn, options, content) {
-  log`createBtn: builtIn:${builtIn}options:${options}content:${content}`;
-  let defaults = builtIn ? BUTTON_DEFAULTS[builtIn] : {};
+  let defaults = getDefaults(builtIn);
   content = isEmpty(content) || content === '<!---->' ? undefined : content;
   options.contentDefault = content;
   options.contentFA = content;
@@ -43,8 +52,19 @@ export default Component.extend({
   builtIn: false,
   registerButton() {},
 
+  buttonId: computed({
+    get() {
+      return guidFor(this);
+    }
+  }),
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+    this._register();
+  },
+
   willDestroyElement() {
-    this._super();
+    this._super(...arguments);
     this._unregister();
   },
 
@@ -55,23 +75,21 @@ export default Component.extend({
       BUTTON_OPTIONS_COLLISIONS.forEach((opt) => {
         options[opt.key] = get(this, opt.safeKey);
       });
+      options.id = get(this, 'buttonId');
       let btn = createBtn(builtIn, options, el);
       set(this, '_btn', btn);
 
-      log`_register: ${btn}`;
       invokeAction(this, 'registerButton', btn);
     });
   },
 
   _unregister() {
     let btn = get(this, '_btn');
-    log`_unregister: ${btn}`;
-    invokeAction(this, 'registerButton', btn, true);
+    invokeAction(this, 'registerButton', btn, { remove: true });
   },
 
   actions: {
     scheduleRegister(el) {
-      log`scheduleRegister: ${el}`;
       this._register(el);
     }
   }

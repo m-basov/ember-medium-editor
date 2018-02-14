@@ -1,53 +1,61 @@
 import Mixin from '@ember/object/mixin';
-import { schedule } from '@ember/runloop';
 import { invokeAction } from 'ember-invoke-action';
-import createLogger from 'ember-medium-editor/utils/logger';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { set, get, getProperties, computed } from '@ember/object';
-import { assert } from '@ember/debug';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
 
-const log = createLogger('mixin', 'me-extension');
+function addOrUpdate(arr, item) {
+  let items = arr;
+  let replaced = false;
+  items = items.map((i) => {
+    if (i.id === item.id) {
+      replaced = true;
+      return item;
+    }
+    return i;
+  });
+  if (!replaced) {
+    items = [...items, item];
+  }
+  return items;
+}
 
 export default Mixin.create({
   tagName: '',
 
   enabled: true,
+  registerExtension() {},
+
+  defaultOptions: computed(() => []),
+
   disabled: computed('enabled', {
     get() {
       return !get(this, 'enabled');
     },
     set(key, value) {
-      log`setDisabled: ${value} ${!value}`;
       return set(this, 'enabled', !value);
     }
   }),
-  defaultOptions: computed(() => assert('You must override defaultOptions property')),
-  registerExtension() {},
 
-  init() {
+  didReceiveAttrs() {
     this._super(...arguments);
-    this.scheduleRegisterExtension();
+    this.register();
   },
 
   willDestroyElement() {
     this._super(...arguments);
-    this.unregisterExtension();
+    this.unregister();
   },
 
-  scheduleRegisterExtension() {
-    schedule('afterRender', () => {
-      let options = get(this, 'enabled');
-      if (options) options = this.createOptions();
-      if (this._shouldRerender(options)) {
-        log`scheduleRegisterExtension: ${options}`;
-        invokeAction(this, 'registerExtension', options, { forceRerender: true });
-      }
-    });
+  register() {
+    let options = get(this, 'enabled');
+    if (options) options = this.createOptions();
+    if (this._shouldRerender(options)) {
+      invokeAction(this, 'registerExtension', options, { forceRerender: true });
+    }
   },
 
-  unregisterExtension() {
-    log`unregisterExtension`;
+  unregister() {
     invokeAction(this, 'registerExtension', undefined);
   },
 
@@ -60,8 +68,19 @@ export default Mixin.create({
   _shouldRerender(options) {
     let instanceOptions = get(this, '_instanceOptions');
     set(this, '_instanceOptions', options);
-    let isNotEqual = !shallowEqual(options, instanceOptions);
-    log`_shouldRerender: ${isNotEqual} ${options} ${instanceOptions}`;
-    return isNotEqual;
+    return !shallowEqual(options, instanceOptions);
+  },
+
+  actions: {
+    pushChild(key, child, options = {}) {
+      let children = get(this, key) || [];
+      if (options.remove) {
+        children = children.filter((c) => c.id !== child.id);
+      } else {
+        children = addOrUpdate(children, child);
+      }
+      set(this, key, children);
+      this.register();
+    }
   }
 });

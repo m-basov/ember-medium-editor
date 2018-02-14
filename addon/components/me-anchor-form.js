@@ -2,12 +2,12 @@ import Component from '@ember/component';
 import MeExtensionMixin from 'ember-medium-editor/mixins/me-extension';
 
 const ANCHOR_FORM_OPTIONS = [
-  'customClassOption',     // null,
-  'customClassOptionText', // 'Button',
-  'linkValidation',        // false,
-  'placeholderText',       // 'Paste or type a link',
-  'targetCheckbox',        // false,
-  'targetCheckboxText',    // 'Open in new window'
+  'customClassOption',
+  'customClassOptionText',
+  'linkValidation',
+  'placeholderText',
+  'targetCheckbox',
+  'targetCheckboxText',
 ];
 
 export default Component.extend(MeExtensionMixin, {

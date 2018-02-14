@@ -1,7 +1,4 @@
 import { assign } from '@ember/polyfills';
-import createLogger from 'ember-medium-editor/utils/logger';
-
-const log = createLogger('util', 'create-options');
 
 export default function createOptions(defaults, overrides = {}) {
   let result = assign({}, defaults);
@@ -16,6 +13,5 @@ export default function createOptions(defaults, overrides = {}) {
     if (result[key] === undefined) delete result[key];
   }
 
-  log`defaults:${defaults}overrides:${overrides}result:${result}`;
   return Object.keys(result).length > 0 ? result : undefined;
 }

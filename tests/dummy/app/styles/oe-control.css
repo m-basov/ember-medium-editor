@@ -12,6 +12,7 @@
 .oe-control__hint {
   font-size: 12px;
   margin-top: 5px;
+  font-style: italic;
 }
 
 .oe-control__default-value {
