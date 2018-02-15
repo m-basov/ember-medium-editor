@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { set,get, getProperties, computed } from '@ember/object';
+import { set,get, getProperties, computed, getWithDefault } from '@ember/object';
 import MediumEditor from 'medium-editor';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { isEmpty } from '@ember/utils';
@@ -8,8 +8,9 @@ import { schedule } from '@ember/runloop';
 import { invokeAction } from 'ember-invoke-action';
 import { guidFor } from '@ember/object/internals';
 
-const BUTTON_DEFAULTS = MediumEditor.extensions.button.prototype.defaults;
-const ANCHOR_DEFAULTS = MediumEditor.extensions.anchor.prototype;
+// MediumEditor is not imported inside of Fastboot
+const BUTTON_DEFAULTS = getWithDefault(MediumEditor, 'extensions.button.prototype.defaults', {});
+const ANCHOR_DEFAULTS = getWithDefault(MediumEditor, 'MediumEditor.extensions.anchor.prototype', {});
 
 const BUTTON_OPTIONS = [
   'name',
@@ -86,11 +87,5 @@ export default Component.extend({
   _unregister() {
     let btn = get(this, '_btn');
     invokeAction(this, 'registerButton', btn, { remove: true });
-  },
-
-  actions: {
-    scheduleRegister(el) {
-      this._register(el);
-    }
   }
 });

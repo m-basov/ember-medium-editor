@@ -3,6 +3,8 @@ import { invokeAction } from 'ember-invoke-action';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { set, get, getProperties, computed } from '@ember/object';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
+import { reads } from '@ember/object/computed';
+import { getOwner } from '@ember/application';
 
 function addOrUpdate(arr, item) {
   let items = arr;
@@ -37,6 +39,15 @@ export default Mixin.create({
     }
   }),
 
+  fastboot: computed({
+    get() {
+      let owner = getOwner(this);
+      return owner.lookup('service:fastboot');
+    }
+  }),
+
+  isFastboot: reads('fastboot.isFastBoot'),
+
   didReceiveAttrs() {
     this._super(...arguments);
     this.register();
@@ -48,6 +59,8 @@ export default Mixin.create({
   },
 
   register() {
+    if (get(this, 'isFastboot')) return;
+
     let options = get(this, 'enabled');
     if (options) options = this.createOptions();
     if (this._shouldRerender(options)) {
@@ -71,16 +84,14 @@ export default Mixin.create({
     return !shallowEqual(options, instanceOptions);
   },
 
-  actions: {
-    pushChild(key, child, options = {}) {
-      let children = get(this, key) || [];
-      if (options.remove) {
-        children = children.filter((c) => c.id !== child.id);
-      } else {
-        children = addOrUpdate(children, child);
-      }
-      set(this, key, children);
-      this.register();
+  pushChild(key, child, options = {}) {
+    let children = get(this, key) || [];
+    if (options.remove) {
+      children = children.filter((c) => c.id !== child.id);
+    } else {
+      children = addOrUpdate(children, child);
     }
+    set(this, key, children);
+    this.register();
   }
 });

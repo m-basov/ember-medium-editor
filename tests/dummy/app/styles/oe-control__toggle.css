@@ -7,9 +7,7 @@
 }
 
 /* Hide default HTML checkbox */
-.oe-control__toggle-checkbox {
-  display:none;
-}
+.oe-control__toggle-checkbox { display:none; }
 
 /* The slider */
 .oe-control__toggle-slider {

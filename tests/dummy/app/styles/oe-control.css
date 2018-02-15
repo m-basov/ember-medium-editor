@@ -20,8 +20,7 @@
   margin-bottom: 5px;
 }
 
-.oe-control__control {
-}
+.oe-control__control {}
 
 .oe-control__input {
   width: 100%;
@@ -32,9 +31,7 @@
   box-shadow: inset 0px -1px 1px 0px #868e96;
 }
 
-.oe-control__input[disabled] {
-  opacity: 0.6;
-}
+.oe-control__input[disabled] { opacity: 0.6; }
 
 .oe-control__select-trigger,
 .oe-control__select-trigger--open,

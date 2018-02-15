@@ -1,6 +1,4 @@
-.configurator-section {
-  border-bottom: 1px solid #ccc;
-}
+.configurator-section { border-bottom: 1px solid #ccc; }
 
 .configurator-section__heading {
   cursor: pointer;
@@ -28,6 +26,4 @@
   color: #868e96;
 }
 
-.configurator-section__controls {
-
-}
+.configurator-section__controls {}

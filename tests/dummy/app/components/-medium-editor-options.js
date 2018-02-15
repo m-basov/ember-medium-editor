@@ -1,3 +1,6 @@
+// Make FastBoot happy
+let w = window ? window : {};
+
 /**
  * Create option for configurator
  */
@@ -35,7 +38,7 @@ export default {
       ),
       ...createOption(
         'contentWindow',
-        window,
+        w,
         'The contentWindow object that contains the contenteditable element. MediumEditor will use this for attaching events, getting selection, etc.',
         { disabled: true }
       ),
@@ -72,7 +75,7 @@ export default {
       ),
       ...createOption(
         'ownerDocument',
-        document,
+        w.document,
         'The ownerDocument object for the contenteditable element. MediumEditor will use this for creating elements, getting selection, attaching events, etc.',
         { disabled: true }
       ),

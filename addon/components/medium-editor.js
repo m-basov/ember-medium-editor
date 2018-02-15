@@ -1,10 +1,12 @@
 import Component from '@ember/component';
 import layout from '../templates/components/medium-editor';
 import MediumEditor from 'medium-editor';
-import { set, getProperties, get } from '@ember/object';
+import { set, getProperties, get, computed, getWithDefault } from '@ember/object';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { schedule } from '@ember/runloop';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
+import { getOwner } from '@ember/application';
+import { reads } from '@ember/object/computed';
 
 const CORE_OPTIONS = [
   'activeButtonClass',
@@ -32,6 +34,15 @@ const MediumEditorComponent = Component.extend({
 
   value: '',
 
+  fastboot: computed({
+    get() {
+      let owner = getOwner(this);
+      return owner.lookup('service:fastboot');
+    }
+  }),
+
+  isFastboot: reads('fastboot.isFastBoot'),
+
   /**
    * Use didReceiveAttrs hook to listen for props changes and update MediumEditor
    * options.
@@ -50,6 +61,7 @@ const MediumEditorComponent = Component.extend({
   },
 
   _setupMediumEditor(forceRerender = false) {
+    if (get(this, 'isFastboot')) return;
     /**
      * We need access to the DOM to setup MediumEditor so this must be executed
      * only inside of afterRender queue.
@@ -83,7 +95,7 @@ const MediumEditorComponent = Component.extend({
   _createOptions() {
     return createOptions(
       getProperties(this, CORE_OPTIONS),
-      get(this, '_options') || {}
+      getWithDefault(this, '_options', {})
     );
   },
 
@@ -135,26 +147,14 @@ const MediumEditorComponent = Component.extend({
     }
   },
 
-  actions: {
-    registerBuiltInExtension(key, val, props = {}) {
-      let options = get(this, '_options') || {};
-      options = {
-        ...options,
-        [key]: val
-      };
-      set(this, '_options', options);
-      this._setupMediumEditor(props.forceRerender);
-    },
-
-    registerExtension(key, val) {
-      let extensions = get(this, 'extensions') || {};
-      extensions = {
-        ...extensions,
-        [key]: val
-      };
-      set(this, 'extensions', extensions);
-      this._setupMediumEditor();
-    }
+  _registerExtension(storage, key, val, props) {
+    let options = getWithDefault(this, storage, {});
+    options = {
+      ...options,
+      [key]: val
+    };
+    set(this, storage, options);
+    this._setupMediumEditor(props.forceRerender);
   }
 });
 

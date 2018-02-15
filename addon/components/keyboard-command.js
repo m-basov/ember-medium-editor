@@ -31,10 +31,6 @@ export default Component.extend({
     return set(this, '_command', command);
   },
 
-  init() {
-    this._super(...arguments);
-  },
-
   didReceiveAttrs() {
     this._super(...arguments);
     invokeAction(this, 'registerCommand', this.commandOptions());

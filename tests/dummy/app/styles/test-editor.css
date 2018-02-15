@@ -1,6 +1,4 @@
-.test-editor {
-  display: flex;
-}
+.test-editor { display: flex; }
 
 .test-editor__section {
   padding: 10px 15px;
@@ -8,25 +6,17 @@
   overflow-x: auto;
 }
 
-.test-editor__section:first-child {
-  flex: 0.65;
-}
+.test-editor__section:first-child { flex: 0.65; }
 
-.test-editor__section:last-child {
-  flex: 0.35;
-}
+.test-editor__section:last-child { flex: 0.35; }
 
-.test-editor__section-heading {
-  text-align: left;
-}
+.test-editor__section-heading { text-align: left; }
 
 .test-editor__section:first-child .test-editor__section-heading {
   margin-left: 20px;
 }
 
-.ember-medium-editor__container {
-  padding: 10px 20px;
-}
+.ember-medium-editor__container { padding: 10px 20px; }
 
 .ember-medium-editor__container blockquote {
   border-left: 8px solid #96f2d7;
