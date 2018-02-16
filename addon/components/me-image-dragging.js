@@ -1,5 +1,7 @@
 import Component from '@ember/component';
-import MeExtensionMixin from 'ember-medium-editor/mixins/me-extension';
+import layout from '../templates/components/me-image-dragging';
 
-export default Component.extend(MeExtensionMixin, {
+export default Component.extend({
+  layout,
+  tagName: ''
 });

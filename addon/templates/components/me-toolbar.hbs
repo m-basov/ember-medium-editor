@@ -1,29 +1,49 @@
-{{yield (hash
-  registerButton=(action pushChild "buttons")
-  bold=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="bold")
-  anchor=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="anchor")
-  italic=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="italic")
-  underline=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="underline")
-  strike-through=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="strikethrough")
-  superscript=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="superscript")
-  subscript=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="subscript")
-  image=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="image")
-  html=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="html")
-  ordered-list=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="orderedlist")
-  unordered-list=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="unorderedlist")
-  indent=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="indent")
-  outdent=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="outdent")
-  justify-center=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="justifyCenter")
-  justify-full=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="justifyFull")
-  justify-left=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="justifyLeft")
-  justify-right=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="justifyRight")
-  remove-format=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="removeFormat")
-  quote=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="quote")
-  pre=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="pre")
-  h1=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="h1")
-  h2=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="h2")
-  h3=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="h3")
-  h4=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="h4")
-  h5=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="h5")
-  h6=(component "toolbar-btn" registerButton=(action pushChild "buttons") builtIn="h6")
-)}}
+{{#me-extension
+  disabled=disabled
+  registerExtension=registerExtension
+  includeOptions=includeOptions
+  options=(hash
+    allowMultiParagraphSelection=allowMultiParagraphSelection
+    diffLeft=diffLeft
+    diffTop=diffTop
+    firstButtonClass=firstButtonClass
+    lastButtonClass=lastButtonClass
+    relativeContainer=relativeContainer
+    standardizeSelectionStart=standardizeSelectionStart
+    static=static
+    align=align
+    sticky=sticky
+    stickyTopOffset=stickyTopOffset
+    updateOnEmptySelection=updateOnEmptySelection
+  )
+  as |ext|}}
+  {{yield (hash
+    registerButton=(action ext.pushChild "buttons")
+    bold=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="bold")
+    anchor=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="anchor")
+    italic=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="italic")
+    underline=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="underline")
+    strike-through=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="strikethrough")
+    superscript=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="superscript")
+    subscript=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="subscript")
+    image=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="image")
+    html=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="html")
+    ordered-list=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="orderedlist")
+    unordered-list=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="unorderedlist")
+    indent=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="indent")
+    outdent=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="outdent")
+    justify-center=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="justifyCenter")
+    justify-full=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="justifyFull")
+    justify-left=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="justifyLeft")
+    justify-right=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="justifyRight")
+    remove-format=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="removeFormat")
+    quote=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="quote")
+    pre=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="pre")
+    h1=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="h1")
+    h2=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="h2")
+    h3=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="h3")
+    h4=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="h4")
+    h5=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="h5")
+    h6=(component "toolbar-btn" registerButton=(action ext.pushChild "buttons") builtIn="h6")
+  )}}
+{{/me-extension}}

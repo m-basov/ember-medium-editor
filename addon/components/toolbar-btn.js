@@ -10,7 +10,7 @@ import { guidFor } from '@ember/object/internals';
 
 // MediumEditor is not imported inside of Fastboot
 const BUTTON_DEFAULTS = getWithDefault(MediumEditor, 'extensions.button.prototype.defaults', {});
-const ANCHOR_DEFAULTS = getWithDefault(MediumEditor, 'MediumEditor.extensions.anchor.prototype', {});
+const ANCHOR_DEFAULTS = getWithDefault(MediumEditor, 'extensions.anchor.prototype', {});
 
 const BUTTON_OPTIONS = [
   'name',

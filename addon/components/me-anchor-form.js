@@ -1,15 +1,7 @@
 import Component from '@ember/component';
-import MeExtensionMixin from 'ember-medium-editor/mixins/me-extension';
+import layout from '../templates/components/me-anchor-form';
 
-const ANCHOR_FORM_OPTIONS = [
-  'customClassOption',
-  'customClassOptionText',
-  'linkValidation',
-  'placeholderText',
-  'targetCheckbox',
-  'targetCheckboxText',
-];
-
-export default Component.extend(MeExtensionMixin, {
-  defaultOptions: ANCHOR_FORM_OPTIONS
+export default Component.extend({
+  layout,
+  tagName: ''
 });

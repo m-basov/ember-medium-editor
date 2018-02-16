@@ -1,9 +1,10 @@
-import Mixin from '@ember/object/mixin';
+import Component from '@ember/component';
+import layout from '../templates/components/me-extension';
 import { invokeAction } from 'ember-invoke-action';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { set, get, getProperties, computed } from '@ember/object';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
-import { reads } from '@ember/object/computed';
+import { reads, not } from '@ember/object/computed';
 import { getOwner } from '@ember/application';
 
 function addOrUpdate(arr, item) {
@@ -22,22 +23,19 @@ function addOrUpdate(arr, item) {
   return items;
 }
 
-export default Mixin.create({
+export default Component.extend({
+  layout,
   tagName: '',
 
-  enabled: true,
   registerExtension() {},
 
-  defaultOptions: computed(() => []),
+  options: computed(() => ({})),
 
-  disabled: computed('enabled', {
-    get() {
-      return !get(this, 'enabled');
-    },
-    set(key, value) {
-      return set(this, 'enabled', !value);
-    }
-  }),
+  includeOptions: computed(() => []),
+
+  disabled: false,
+
+  enabled:  not('disabled'),
 
   fastboot: computed({
     get() {
@@ -50,38 +48,12 @@ export default Mixin.create({
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this.register();
+    this._register();
   },
 
   willDestroyElement() {
     this._super(...arguments);
-    this.unregister();
-  },
-
-  register() {
-    if (get(this, 'isFastboot')) return;
-
-    let options = get(this, 'enabled');
-    if (options) options = this.createOptions();
-    if (this._shouldRerender(options)) {
-      invokeAction(this, 'registerExtension', options, { forceRerender: true });
-    }
-  },
-
-  unregister() {
-    invokeAction(this, 'registerExtension', undefined);
-  },
-
-  createOptions() {
-    let defaultOptions = get(this, 'defaultOptions');
-    let options = getProperties(this, defaultOptions);
-    return createOptions(options);
-  },
-
-  _shouldRerender(options) {
-    let instanceOptions = get(this, '_instanceOptions');
-    set(this, '_instanceOptions', options);
-    return !shallowEqual(options, instanceOptions);
+    this._unregister();
   },
 
   pushChild(key, child, options = {}) {
@@ -92,6 +64,32 @@ export default Mixin.create({
       children = addOrUpdate(children, child);
     }
     set(this, key, children);
-    this.register();
+    this._register();
+  },
+
+  _register() {
+    if (get(this, 'isFastboot')) return;
+
+    let options = get(this, 'enabled');
+    if (options) options = this._createOptions();
+    if (this._shouldRerender(options)) {
+      invokeAction(this, 'registerExtension', options, { forceRerender: true });
+    }
+  },
+
+  _unregister() {
+    invokeAction(this, 'registerExtension', undefined);
+  },
+
+  _createOptions() {
+    let options = get(this, 'options');
+    let includeOptions = getProperties(this, get(this, 'includeOptions'));
+    return createOptions(options, includeOptions);
+  },
+
+  _shouldRerender(options) {
+    let instanceOptions = get(this, '_instanceOptions');
+    set(this, '_instanceOptions', options);
+    return !shallowEqual(options, instanceOptions);
   }
 });

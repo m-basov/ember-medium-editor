@@ -1,13 +1,7 @@
 import Component from '@ember/component';
-import MeExtensionMixin from 'ember-medium-editor/mixins/me-extension';
+import layout from '../templates/components/me-anchor-preview';
 
-const ANCHOR_PREVIEW_OPTIONS = [
-  'hideDelay',
-  'previewValueSelector',
-  'showOnEmptyLinks',
-  'showWhenToolbarIsVisible'
-];
-
-export default Component.extend(MeExtensionMixin, {
-  defaultOptions: ANCHOR_PREVIEW_OPTIONS
+export default Component.extend({
+  layout,
+  tagName: ''
 });
