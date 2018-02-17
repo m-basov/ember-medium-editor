@@ -15,6 +15,7 @@
     spellCheck=coreOptions.spellCheck.value
     targetBlank=coreOptions.targetBlank.value
     class="test-editor__editor"
+    onInput=(action (mut text))
     as |editor|}}
     {{#editor.toolbar
       allowMultiParagraphSelection=toolbarOptions.allowMultiParagraphSelection.value

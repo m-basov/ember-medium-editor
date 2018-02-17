@@ -7,6 +7,8 @@ import { schedule } from '@ember/runloop';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
 import { getOwner } from '@ember/application';
 import { reads } from '@ember/object/computed';
+import mediumEditorEvents from 'ember-medium-editor/-private/medium-editor-events';
+import { capitalize } from '@ember/string';
 
 const CORE_OPTIONS = [
   'activeButtonClass',
@@ -83,9 +85,11 @@ const MediumEditorComponent = Component.extend({
         this._maybeDestroyPrevInstance();
         // Create a new instance with the current set of options
         let instance = this._createInstance(options);
-        // Set content with preserving current cursor position
-        this._setContent(instance);
+        // Attach all passed events
+        this._attachEvents(instance);
       }
+      // Set content with preserving current cursor position
+      this._setContent();
     });
   },
 
@@ -135,7 +139,8 @@ const MediumEditorComponent = Component.extend({
    * Update MediumEditor content if it has been changed
    * with preserving cursor position.
    */
-  _setContent(editor) {
+  _setContent() {
+    let editor = get(this, '_instance');
     let value = get(this, 'value');
     let prevValue = get(this, '_prevValue');
 
@@ -155,6 +160,23 @@ const MediumEditorComponent = Component.extend({
     };
     set(this, storage, options);
     this._setupMediumEditor(props.forceRerender);
+  },
+
+  _attachEvents(editor) {
+    mediumEditorEvents.forEach((event) => {
+      let handler = get(this, `on${capitalize(event)}`);
+      if (typeof handler === 'function') editor.subscribe(event, handler);
+    });
+    this._attachOnInput(editor)
+  },
+
+  _attachOnInput(editor) {
+    let onInput = get(this, 'onInput');
+    if (typeof onInput !== 'function') return;
+    editor.subscribe('editableInput', (...args) => {
+      let content = editor.getContent();
+      onInput(content, ...args);
+    });
   }
 });
 
