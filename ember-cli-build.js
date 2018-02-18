@@ -8,7 +8,7 @@ module.exports = function(defaults) {
       includePolyfill: true
     },
     vendorFiles: {
-      'jquery.js': null
+      'jquery.js': EmberAddon.env() === 'test'
     },
     babel: {
       plugins: [

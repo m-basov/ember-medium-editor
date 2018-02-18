@@ -33,6 +33,7 @@ const MediumEditorComponent = Component.extend({
   _options: null,
   _instanceOptions: null,
   _prevValue: '',
+  _firstRender: true,
 
   value: '',
 
@@ -175,6 +176,8 @@ const MediumEditorComponent = Component.extend({
     if (typeof onInput !== 'function') return;
     editor.subscribe('editableInput', (...args) => {
       let content = editor.getContent();
+      // Fix triggering onInput after first render
+      if (get(this, '_firstRender')) return set(this, '_firstRender', false);
       onInput(content, ...args);
     });
   }
