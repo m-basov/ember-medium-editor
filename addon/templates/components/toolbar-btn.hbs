@@ -1,3 +1,18 @@
-{{#render-to-string afterRender=(action _register)~}}
-  {{yield}}
-{{~/render-to-string}}
+{{#me-extension-child
+  register=(action _register)
+  options=(hash
+    builtIn=builtIn
+    name=name
+    btnAction=btnAction
+    aria=aria
+    tagNames=tagNames
+    style=style
+    useQueryState=useQueryState
+    contentDefault=contentFA
+    contentFA=contentFA
+  ) as |child|}}
+  {{#render-to-string
+    afterRender=(action child.addOption "contentDefault")~}}
+    {{yield}}
+  {{~/render-to-string}}
+{{/me-extension-child}}

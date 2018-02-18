@@ -1,7 +1,6 @@
 {{#me-extension
   disabled=disabled
   registerExtension=registerExtension
-  includeOptions=includeOptions
   as |ext|}}
   {{yield (hash
     registerCommand=(action ext.pushChild "commands")
