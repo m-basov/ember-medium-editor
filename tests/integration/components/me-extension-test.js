@@ -7,24 +7,22 @@ module('Integration | Component | me-extension', function(hooks) {
   setupRenderingTest(hooks);
 
   test('it registers extension after attrs received', async function(assert) {
-    assert.expect(6);
+    assert.expect(3);
 
     let iteration = 0;
     let expected = [
       // initial set of options
-      { options: { static: true, sticky: false }, props: { forceRerender: true }},
+      { static: true, sticky: false },
       // changed set
-      { options: { static: false, sticky: false }, props: { forceRerender: true }},
+      { static: false, sticky: false }
       // teardown set
-      {}
     ];
 
     this.setProperties({
       static: true,
       sticky: false,
-      registerExtension(options, props) {
-        assert.deepEqual(options, expected[iteration].options);
-        assert.deepEqual(props, expected[iteration].props);
+      registerExtension(options) {
+        assert.deepEqual(options, expected[iteration]);
         iteration++;
       }
     });

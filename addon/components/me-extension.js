@@ -74,7 +74,7 @@ export default Component.extend({
     let options = get(this, 'enabled');
     if (options) options = this._createOptions();
     if (this._shouldRerender(options)) {
-      invokeAction(this, 'registerExtension', options, { forceRerender: true });
+      invokeAction(this, 'registerExtension', options);
     }
   },
 

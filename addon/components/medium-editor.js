@@ -3,8 +3,7 @@ import layout from '../templates/components/medium-editor';
 import MediumEditor from 'medium-editor';
 import { set, getProperties, get, computed, getWithDefault } from '@ember/object';
 import createOptions from 'ember-medium-editor/utils/create-options';
-import { schedule } from '@ember/runloop';
-import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
+import { scheduleOnce } from '@ember/runloop';
 import { getOwner } from '@ember/application';
 import { reads } from '@ember/object/computed';
 import mediumEditorEvents from 'ember-medium-editor/-private/medium-editor-events';
@@ -52,7 +51,7 @@ const MediumEditorComponent = Component.extend({
    */
   didReceiveAttrs() {
     this._super(...arguments);
-    this._setupMediumEditor();
+    this._scheduleSetupMediumEditor();
   },
 
   /**
@@ -63,35 +62,30 @@ const MediumEditorComponent = Component.extend({
     this._maybeDestroyPrevInstance();
   },
 
-  _setupMediumEditor(forceRerender = false) {
+  _scheduleSetupMediumEditor() {
     if (get(this, 'isFastboot')) return;
+    scheduleOnce('afterRender', this, '_setupMediumEditor');
+  },
+
+  _setupMediumEditor() {
     /**
      * We need access to the DOM to setup MediumEditor so this must be executed
      * only inside of afterRender queue.
      */
-    schedule('afterRender', () => {
-      let options = this._createOptions();
-      /**
-       * Before render check if current set of options has been changed.
-       * There is a way to force rerendering by passing boolean param.
-       * It is used by built-in extensions.
-       */
-      if (forceRerender || this._shouldRerender(options)) {
-        /**
-         * There are no way to update options on the fly so we need to teardown
-         * previous instance first and create a new one with new options.
-         *
-         * https://github.com/yabwe/medium-editor/issues/1129
-         */
-        this._maybeDestroyPrevInstance();
-        // Create a new instance with the current set of options
-        let instance = this._createInstance(options);
-        // Attach all passed events
-        this._attachEvents(instance);
-      }
-      // Set content with preserving current cursor position
-      this._setContent();
-    });
+    let options = this._createOptions();
+    /**
+     * There are no way to update options on the fly so we need to teardown
+     * previous instance first and create a new one with new options.
+     *
+     * https://github.com/yabwe/medium-editor/issues/1129
+     */
+    this._maybeDestroyPrevInstance();
+    // Create a new instance with the current set of options
+    let instance = this._createInstance(options);
+    // Attach all passed events
+    this._attachEvents(instance);
+    // Set content with preserving current cursor position
+    this._setContent();
   },
 
   /**
@@ -126,17 +120,6 @@ const MediumEditorComponent = Component.extend({
   },
 
   /**
-   * Compare a new set of options with the cached one(shallow).
-   * If they are different then allow component to rerender.
-   * Skip rerendering otherwise.
-   */
-  _shouldRerender(options) {
-    let instanceOptions = get(this, '_instanceOptions');
-    set(this, '_instanceOptions', options);
-    return !shallowEqual(options, instanceOptions);
-  },
-
-  /**
    * Update MediumEditor content if it has been changed
    * with preserving cursor position.
    */
@@ -153,14 +136,14 @@ const MediumEditorComponent = Component.extend({
     }
   },
 
-  _registerExtension(storage, key, val, props) {
+  _registerExtension(storage, key, val) {
     let options = getWithDefault(this, storage, {});
     options = {
       ...options,
       [key]: val
     };
     set(this, storage, options);
-    this._setupMediumEditor(props.forceRerender);
+    this._scheduleSetupMediumEditor();
   },
 
   _attachEvents(editor) {
