@@ -72,6 +72,9 @@ export default Component.extend({
   },
 
   _unregister() {
+    // replace `pushChild` method with NoOp as it should not be called
+    // after unregistering extension
+    set(this, 'pushChild', () => {});
     invokeAction(this, 'registerExtension', undefined);
   },
 
