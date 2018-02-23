@@ -5,6 +5,7 @@ import createOptions from 'ember-medium-editor/utils/create-options';
 import { set, get, getProperties, computed } from '@ember/object';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
 import { not } from '@ember/object/computed';
+import { scheduleOnce } from '@ember/runloop';
 
 function addOrUpdate(arr, item) {
   let items = arr;
@@ -30,6 +31,7 @@ export default Component.extend({
 
   options: computed(() => ({})),
 
+  hasBlock: false,
   disabled: false,
 
   enabled:  not('disabled'),
@@ -38,7 +40,7 @@ export default Component.extend({
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this._register();
+    this._scheduleRegister();
   },
 
   willDestroyElement() {
@@ -55,12 +57,17 @@ export default Component.extend({
       children = addOrUpdate(children, child);
     }
     set(this, key, children);
-    this._register();
+    this._scheduleRegister();
   },
 
   _addIncludeOptions(key) {
     let includeOptions = get(this, '_includeOptions');
     if (!includeOptions.includes(key)) includeOptions.push(key);
+  },
+
+  _scheduleRegister() {
+    if (!get(this, 'hasBlock')) return this._register();
+    scheduleOnce('afterRender', this, '_register');
   },
 
   _register() {

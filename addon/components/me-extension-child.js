@@ -4,12 +4,14 @@ import { get, set, computed, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import layout from 'ember-medium-editor/templates/components/me-extension-child';
+import { scheduleOnce } from '@ember/runloop';
 
 export default Component.extend({
   layout,
   tagName: '',
 
   options: computed(() => ({})),
+  hasBlock: false,
   register() {},
 
   _extraOptions: computed(() => []),
@@ -22,7 +24,7 @@ export default Component.extend({
 
   didReceiveAttrs() {
     this._super(...arguments);
-    this._register();
+    this._scheduleRegister();
   },
 
   willDestroyElement() {
@@ -33,7 +35,7 @@ export default Component.extend({
   addOption(key, val) {
     this._includeOption(key);
     set(this, key, val);
-    this._register();
+    this._scheduleRegister();
   },
 
   _createOptions() {
@@ -44,6 +46,11 @@ export default Component.extend({
         ...getProperties(this, get(this, '_extraOptions'))
       }
     );
+  },
+
+  _scheduleRegister() {
+    if (!get(this, 'hasBlock')) return this._register();
+    scheduleOnce('afterRender', this, '_register');
   },
 
   _register() {

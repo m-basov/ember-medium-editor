@@ -1,5 +1,6 @@
 {{#me-extension-child
   register=(action _register)
+  hasBlock=(has-block)
   options=(hash
     builtIn=builtIn
     name=name
@@ -11,8 +12,10 @@
     contentDefault=contentFA
     contentFA=contentFA
   ) as |child|}}
-  {{#render-to-string
-    afterRender=(action child.addOption "contentDefault")~}}
-    {{yield}}
-  {{~/render-to-string}}
+  {{#if (has-block)}}
+    {{#render-to-string
+      afterRender=(action child.addOption "contentDefault")~}}
+      {{yield}}
+    {{~/render-to-string}}
+  {{/if}}
 {{/me-extension-child}}

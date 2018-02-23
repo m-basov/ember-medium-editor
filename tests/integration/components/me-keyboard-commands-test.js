@@ -11,16 +11,16 @@ module('Integration | Component | me-keyboard-commands', function(hooks) {
 
     let iteration = 0;
     let expected = [
-      // Extension is disabled
-      false,
       // EXtension is enabled
-      ['bold', 'italic']
+      ['bold', 'italic'],
+      // Extension is disabled
+      false
       // Extension unregistered
     ];
 
     this.setProperties({
       commands: ['bold', 'italic'],
-      disabled: true,
+      disabled: false,
       registerExtension(kbd) {
         let expectedKbd = expected[iteration];
         if (kbd === undefined || typeof kbd === 'boolean') {
@@ -46,6 +46,6 @@ module('Integration | Component | me-keyboard-commands', function(hooks) {
       {{/me-keyboard-commands}}
     `);
 
-    this.set('disabled', false);
+    this.set('disabled', true);
   });
 });
