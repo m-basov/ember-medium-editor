@@ -1,0 +1,29 @@
+.configurator-section { border-bottom: 1px solid #ccc; }
+
+.configurator-section__heading {
+  cursor: pointer;
+  position: relative;
+  margin-left: 20px;
+  margin-bottom: 5px;
+}
+
+.configurator-section__heading:before {
+  content: '\25B6';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: -20px;
+  transition: transform ease-in-out .2s;
+}
+
+.configurator-section--open .configurator-section__heading:before {
+  transform: rotate(90deg);
+}
+
+.configurator-section__description {
+  font-size: 16px;
+  margin-top: 0px;
+  color: #868e96;
+}
+
+.configurator-section__controls {}

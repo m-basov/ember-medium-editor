@@ -1,0 +1,23 @@
+<p class="oe-control__label">
+  <label for={{controlId}}>
+    {{label-for name}}
+  </label>
+</p>
+
+<p class="oe-control__control">
+  {{component component
+    controlId=controlId
+    value=option.value
+    disabled=option.disabled
+    options=option.availableValues
+    on-change=on-change}}
+</p>
+
+<p class="oe-control__default-value">
+  <span>Default: </span>
+  <span>{{to-string option.default}}</span>
+</p>
+
+<p class="oe-control__hint">
+  {{option.hint}}
+</p>

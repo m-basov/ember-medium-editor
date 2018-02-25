@@ -1,0 +1,45 @@
+/* From https://www.w3schools.com/howto/howto_css_switch.asp */
+.oe-control__toggle {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.oe-control__toggle-checkbox { display:none; }
+
+/* The slider */
+.oe-control__toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #495057;
+  transition: .4s;
+}
+
+.oe-control__toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: #fff;
+  transition: .4s;
+}
+
+.oe-control__toggle-checkbox:checked + .oe-control__toggle-slider {
+  background-color: #20c997;
+}
+
+.oe-control__toggle-checkbox:focus + .oe-control__toggle-slider {
+  box-shadow: 0 0 1px #20c997;
+}
+
+.oe-control__toggle-checkbox:checked + .oe-control__toggle-slider:before {
+  transform: translateX(26px);
+}

@@ -1,4 +1,3 @@
-/* eslint-env node */
 'use strict';
 
 const path = require('path');
@@ -68,5 +67,11 @@ module.exports = {
       excludeStyles: false,
       theme: 'default'
     }, this.app.options.mediumEditor);
+  },
+
+  options: {
+    babel: {
+      plugins: ['transform-object-rest-spread']
+    }
   }
 };

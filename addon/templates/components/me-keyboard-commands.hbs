@@ -1,0 +1,10 @@
+{{#me-extension
+  disabled=disabled
+  hasBlock=(has-block)
+  registerExtension=registerExtension
+  as |ext|}}
+  {{yield (hash
+    registerCommand=(action ext.pushChild "commands")
+    command=(component "keyboard-command" registerCommand=(action ext.pushChild "commands"))
+  )}}
+{{/me-extension}}

@@ -1,142 +1,198 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import { render, clearRender } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
-import { find } from 'ember-native-dom-helpers';
-import MediumEditor from 'medium-editor';
+import Service from '@ember/service';
+import {
+  fillInMediumEditor,
+  triggerMediumEditorEvent,
+  getMediumEditor,
+  getMediumEditorExtension
+} from 'ember-medium-editor/test-support';
 
-const meClass = '.medium-editor-element';
+module('Integration | Component | medium-editor', function(hooks) {
+  setupRenderingTest(hooks);
 
-moduleForComponent('medium-editor', 'Integration | Component | medium editor', {
-  integration: true
-});
+  // 1. It updates options and rerenders
+  test('it should rerender if options updated', async function(assert) {
+    assert.expect(4);
 
-test('it renders', function(assert) {
-  assert.expect(1);
+    this.setProperties({
+      buttonLabels: 'fontawesome',
+      disabledToolbar: false
+    });
 
-  this.render(hbs`{{medium-editor}}`);
+    await render(hbs`
+      {{#medium-editor
+        buttonLabels=buttonLabels
+        as |editor|}}
+        {{editor.toolbar
+          disabled=disabledToolbar}}
+      {{/medium-editor}}
+    `);
 
-  assert.equal(find(meClass).innerHTML, '');
-});
+    assert.ok(getMediumEditorExtension('toolbar'));
+    assert.equal(getMediumEditor().options.buttonLabels, 'fontawesome');
 
-test('it sets initial value and updates it', function(assert) {
-  assert.expect(2);
+    this.setProperties({
+      buttonLabels: false,
+      disabledToolbar: true
+    });
 
-  this.set('tempValue', '<h1>Value</h1>');
-  this.render(hbs`{{medium-editor tempValue}}`);
-
-  assert.equal(find('h1').innerHTML, 'Value');
-
-  this.set('tempValue', '<h2>New value</h2>');
-  assert.equal(find('h2').innerHTML, 'New value');
-});
-
-test('it should trigger onChange action when content changed', function(assert) {
-  assert.expect(1);
-
-  this.on('onChange', (actual) => assert.equal(actual, '<p>typed</p>'));
-  this.render(hbs`{{medium-editor onChange=(action "onChange")}}`);
-
-  MediumEditor.getEditorFromElement(find(meClass)).setContent('<p>typed</p>');
-});
-
-test('it should pass options', function(assert) {
-  assert.expect(1);
-
-  this.set('meOptions', { placeholder: { text: 'placeholder' } });
-  this.render(hbs`{{medium-editor options=meOptions}}`);
-
-  assert.equal(find(meClass).getAttribute('data-placeholder'), 'placeholder');
-});
-
-test('it should accept "first class" options', function(assert) {
-  assert.expect(1);
-
-  this.set('placeholderOption', { text: 'test' });
-  this.render(hbs`{{medium-editor placeholder=placeholderOption}}`);
-
-  assert.equal(find(meClass).getAttribute('data-placeholder'), 'test');
-});
-
-test('it should accept options with correct priority', function(assert) {
-  assert.expect(1);
-
-  this.set('optionsHash', { placeholder: { text: 'hash' } });
-  this.set('placeholderOption', { text: 'option' });
-  this.render(hbs`{{medium-editor options=optionsHash placeholder=placeholderOption}}`);
-
-  assert.equal(find(meClass).getAttribute('data-placeholder'), 'option');
-});
-
-test('it should not fire onChange callback if content did not change', function(assert) {
-  assert.expect(0);
-
-  this.on('onChange', () => assert.ok(true));
-  this.set('value', 'old');
-  this.render(hbs`{{medium-editor value onChange=(action "onChange")}}`);
-
-  MediumEditor.getEditorFromElement(find(meClass)).setContent('old');
-});
-
-test('it should fire medium-editor events if passed', function(assert) {
-  assert.expect(1);
-
-  this.on('callback', () => assert.ok(true));
-  this.render(hbs`{{medium-editor value editableInput=(action "callback")}}`);
-  this.set('value', 'test');
-});
-
-test('it should fire onFinishedTyping event after 1 second', function(assert) {
-  assert.expect(1);
-
-  let done = assert.async();
-  let start = new Date();
-
-  this.on('callback', () => {
-    let end = new Date();
-    assert.ok(end.getTime() - start.getTime() >= 1000);
-    done();
+    assert.notOk(getMediumEditorExtension('toolbar'));
+    assert.notOk(getMediumEditor().options.buttonLabels);
   });
-  this.render(hbs`{{medium-editor value onFinishedTyping=(action "callback")}}`);
-  this.set('value', 'new');
-});
 
-test('it should respect onFinishedTypingDelay option', function(assert) {
-  assert.expect(1);
+  // 2. It destroys instance
+  test('it should destroy medium-editor if component destroyed', async function(assert) {
+    assert.expect(2);
 
-  let done = assert.async();
-  let start = new Date();
+    await render(hbs`
+      {{medium-editor}}
+    `);
 
-  this.on('callback', () => {
-    let end = new Date();
-    assert.ok(end.getTime() - start.getTime() >= 2000);
-    done();
+    assert.ok(getMediumEditor());
+
+    await clearRender();
+
+    assert.throws(() => getMediumEditor(), /not found/);
   });
-  this.render(hbs`
-    {{medium-editor
-        value
-        onFinishedTyping=(action "callback")
-        onFinishedTypingDelay=2000}}
-  `);
-  this.set('value', 'test');
-});
 
-test('it should destroy medium-editor instance when component destroyed', function(assert) {
-  assert.expect(1);
+  // 3. It updates content
+  test('it should update medium editor content', async function(assert) {
+    assert.expect(2);
 
-  this.render(hbs`{{medium-editor}}`);
-  this.clearRender();
+    this.set('text', 'Initial');
 
-  assert.equal(find(meClass), null);
-});
+    await render(hbs`
+      {{medium-editor text}}
+    `);
 
-test('it should not fire onFinishedTyping if component is destroyed', function(assert) {
-  assert.expect(0);
+    assert.equal(this.element.textContent.trim(), 'Initial');
 
-  let done = assert.async();
+    this.set('text', 'New');
 
-  this.on('callback', () => assert.ok(true));
-  this.render(hbs`{{medium-editor value onFinishedTyping=(action "callback")}}`);
-  this.set('value', 'new');
-  this.clearRender();
+    assert.equal(this.element.textContent.trim(), 'New');
+  });
 
-  setTimeout(done, 1100);
+  // 4. It registers extensions
+  test('it should register built-in extensions', async function(assert) {
+    assert.expect(8);
+
+    this.set('test', true);
+
+    await render(hbs`
+      {{#medium-editor as |editor|}}
+        {{editor.toolbar static=true}}
+        {{editor.anchor placeholderText="test"}}
+        {{editor.anchor-preview hideDelay=300}}
+        {{editor.placeholder text="test"}}
+        {{editor.paste forcePlainText=false}}
+        {{editor.keyboard-commands disabled=true}}
+        {{editor.image-dragging false}}
+        {{editor.auto-link true}}
+      {{/medium-editor}}
+    `);
+
+    assert.ok(getMediumEditorExtension('toolbar').static);
+    assert.equal(getMediumEditorExtension('anchor').placeholderText, 'test');
+    assert.equal(getMediumEditorExtension('anchor-preview').hideDelay, 300);
+    assert.equal(getMediumEditorExtension('paste').forcePlainText, false);
+    assert.equal(getMediumEditorExtension('placeholder').text, 'test');
+    assert.notOk(getMediumEditorExtension('keyboard-commands'));
+    assert.notOk(getMediumEditor().options.imageDragging);
+    assert.ok(getMediumEditorExtension('autoLink'));
+  });
+
+  // 5. It attaches events
+  test('it should attach medium editor custom events with on prefix', async function(assert) {
+    assert.expect(2);
+
+    this.setProperties({
+      onEditableInput() {
+        assert.ok(true);
+      },
+      onEditableClick() {
+        assert.ok(true);
+      }
+    });
+
+    await render(hbs`
+      {{medium-editor
+        onEditableInput=(action onEditableInput)
+        onEditableClick=(action onEditableClick)}}
+    `);
+
+    await triggerMediumEditorEvent('editableClick');
+    await fillInMediumEditor('Some text');
+  });
+
+  // 6. It triggers onInput
+  test('it should trigger onInput event with updated content', async function(assert) {
+    assert.expect(1);
+
+    this.setProperties({
+      text: 'Test',
+      onInput(text) {
+        this.set('text', text);
+        assert.equal(text, 'It works!');
+      }
+    });
+
+    await render(hbs`
+      {{medium-editor
+        text
+        onInput=(action onInput)}}
+    `);
+
+    await fillInMediumEditor('It works!');
+  });
+
+  // 7. It do not triggers onInput on initial render
+  test('it should not trigger onInput on initial render', async function(assert) {
+    assert.expect(0);
+
+    this.setProperties({
+      text: 'Text',
+      onInput() {
+        assert.ok(false);
+      }
+    });
+
+    await render(hbs`
+      {{medium-editor
+        text
+        onInput=(action onInput)}}
+    `);
+  });
+
+  // 8. It do not renders on fastboot
+  test('it should not create instance in fastboot', async function(assert) {
+    assert.expect(1);
+
+    this.owner.register('service:fastboot', Service.extend({ isFastBoot: true }));
+
+    await render(hbs`
+      {{#medium-editor as |editor|}}
+        {{#editor.toolbar as |toolbar|}}
+          {{#toolbar.italic}}
+            <i>Italic</i>
+          {{/toolbar.italic}}
+        {{/editor.toolbar}}
+        {{editor.anchor}}
+        {{editor.anchor-preview}}
+        {{editor.paste}}
+        {{editor.placeholder}}
+        {{editor.image-dragging}}
+        {{editor.auto-link}}
+        {{#editor.keyboard-commands as |kbd|}}
+          {{kbd.command
+            command="italic"
+            meta=true}}
+        {{/editor.keyboard-commands}}
+      {{/medium-editor}}
+    `);
+
+    assert.throws(() => getMediumEditor(), /not found/);
+  });
 });
