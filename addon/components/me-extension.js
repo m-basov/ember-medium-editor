@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-import layout from '../templates/components/me-extension';
-import { invokeAction } from 'ember-invoke-action';
+import layout from 'ember-medium-editor/templates/components/me-extension';
 import createOptions from 'ember-medium-editor/utils/create-options';
 import { set, get, getProperties, computed } from '@ember/object';
 import shallowEqual from 'ember-medium-editor/utils/shallow-equal';
@@ -32,9 +31,9 @@ export default Component.extend({
   options: computed(() => ({})),
 
   hasBlock: false,
-  disabled: false,
 
-  enabled:  not('disabled'),
+  disabled: false,
+  enabled: not('disabled'),
 
   _includeOptions: computed(() => []),
 
@@ -74,7 +73,7 @@ export default Component.extend({
     let options = get(this, 'enabled');
     if (options) options = this._createOptions();
     if (this._shouldRerender(options)) {
-      invokeAction(this, 'registerExtension', options);
+      get(this, 'registerExtension')(options);
     }
   },
 
@@ -82,13 +81,16 @@ export default Component.extend({
     // replace `pushChild` method with NoOp as it should not be called
     // after unregistering extension
     set(this, 'pushChild', () => {});
-    invokeAction(this, 'registerExtension', undefined);
+    get(this, 'registerExtension')(undefined);
   },
 
   _createOptions() {
     let options = get(this, 'options');
-    let includeOptions = getProperties(this, get(this, '_includeOptions'));
-    return createOptions(options, includeOptions);
+    let includeOptions = get(this, '_includeOptions');
+    if (Object.keys(options).length === 0 && includeOptions.length === 0) {
+      return get(this, 'enabled');
+    }
+    return createOptions(options, getProperties(this, includeOptions));
   },
 
   _shouldRerender(options) {

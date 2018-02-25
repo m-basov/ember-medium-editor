@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { invokeAction } from 'ember-invoke-action';
 import { get, set, computed, getProperties } from '@ember/object';
 import { guidFor } from '@ember/object/internals';
 import createOptions from 'ember-medium-editor/utils/create-options';
@@ -29,7 +28,7 @@ export default Component.extend({
 
   willDestroyElement() {
     this._super(...arguments);
-    invokeAction(this, 'register', { id: get(this, 'childId') }, { remove: true });
+    get(this, 'register')({ id: get(this, 'childId') }, { remove: true });
   },
 
   addOption(key, val) {
@@ -54,7 +53,7 @@ export default Component.extend({
   },
 
   _register() {
-    invokeAction(this, 'register', this._createOptions());
+    get(this, 'register')(this._createOptions());
   },
 
   _includeOption(key) {

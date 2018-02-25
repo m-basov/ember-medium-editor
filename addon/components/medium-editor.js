@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import layout from '../templates/components/medium-editor';
+import layout from 'ember-medium-editor/templates/components/medium-editor';
 import MediumEditor from 'medium-editor';
 import { set, getProperties, get, computed, getWithDefault } from '@ember/object';
 import createOptions from 'ember-medium-editor/utils/create-options';
@@ -25,8 +25,9 @@ const CORE_OPTIONS = [
   'extensions'
 ];
 
-const MediumEditorComponent = Component.extend({
+export default Component.extend({
   layout,
+  classNames: 'ember-medium-editor',
 
   _instance: null,
   _options: null,
@@ -72,6 +73,8 @@ const MediumEditorComponent = Component.extend({
      * We need access to the DOM to setup MediumEditor so this must be executed
      * only inside of afterRender queue.
      */
+    if (!this.element) return;
+
     let options = this._createOptions();
     /**
      * There are no way to update options on the fly so we need to teardown
@@ -164,10 +167,6 @@ const MediumEditorComponent = Component.extend({
       onInput(content, ...args);
     });
   }
-});
-
-MediumEditorComponent.reopenClass({
+}).reopenClass({
   positionalParams: ['value']
 });
-
-export default MediumEditorComponent;

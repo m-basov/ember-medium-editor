@@ -1,7 +1,13 @@
 import Component from '@ember/component';
-import layout from '../templates/components/me-anchor-preview';
+import layout from 'ember-medium-editor/templates/components/me-auto-link';
+import { not } from '@ember/object/computed';
 
 export default Component.extend({
   layout,
-  tagName: ''
+  tagName: '',
+
+  enabled: false,
+  disabled: not('enabled')
+}).reopenClass({
+  positionalParams: ['enabled']
 });
