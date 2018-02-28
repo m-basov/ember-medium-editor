@@ -7,9 +7,6 @@ module.exports = function(defaults) {
     'ember-cli-babel': {
       includePolyfill: true
     },
-    vendorFiles: {
-      'jquery.js': EmberAddon.env() === 'test' ? undefined : null
-    },
     babel: {
       plugins: [
         'transform-object-rest-spread'
