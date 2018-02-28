@@ -1,0 +1,18 @@
+{{#docs-viewer as |viewer|}}
+
+  {{#viewer.nav as |nav|}}
+    {{nav.item 'Overview' 'docs.index'}}
+    {{nav.item 'Installation' 'docs.installation'}}
+    {{nav.item 'Usage' 'docs.usage'}}
+    {{nav.item 'Extensions' 'docs.usage'}}
+  {{/viewer.nav}}
+
+  {{#viewer.main}}
+    <div class="docs-container docs__center">
+      <div class="docs-section">
+        {{outlet}}
+      </div>
+    </div>
+  {{/viewer.main}}
+
+{{/docs-viewer}}
