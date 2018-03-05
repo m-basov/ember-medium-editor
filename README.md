@@ -2,6 +2,8 @@
 
 [medium-editor](https://github.com/yabwe/medium-editor) library for Ember Apps.
 
+#### README and docs are under reconstruction for now. Preparing it for [v1.0](https://github.com/kolybasov/ember-medium-editor/issues/9) release!
+
 ## Installation
 
 With `ember`:
